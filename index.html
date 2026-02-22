@@ -6,6 +6,7 @@
 <title>THE LIGHTKEEPER</title>
 
 <style>
+/* grain overlay */
 body::after {
   content: "";
   position: fixed;
@@ -28,24 +29,21 @@ body::after {
   75%  { transform: translate(-3%, 5%); }
   100% { transform: translate(0, 0); }
 }
+
+/* font */
 @font-face {
   font-family: "Gallery";
   src: url("fonts/gallery.woff2") format("woff2");
 }
 
-* {
-  box-sizing: border-box;
-}
+* { box-sizing: border-box; }
 
-html, body {
-  height: 100dvh;
-  margin: 0;
-}
+html, body { height: 100dvh; margin: 0; }
 
 body {
   display: flex;
   flex-direction: column;
-  background-color: #a7896a;
+  background-color: #e0cca8;
   font-family: "Gallery", sans-serif;
   color: #a7896a;
   text-align: center;
@@ -67,35 +65,171 @@ h3 {
   user-select: none;
 }
 
+/* video container */
 .video-container {
   flex: 1;
   min-height: 0;
   display: flex;
   justify-content: center;
   align-items: center;
+  position: relative;
   padding: 2vh 0;
 }
 
+/* hide default controls */
 video {
   max-width: 100%;
   max-height: 100%;
-  width: auto;
-  height: auto;
   object-fit: contain;
   display: block;
 }
+
+/* custom controls overlay */
+.controls {
+  position: absolute;
+  bottom: 5%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  z-index: 10;
+}
+
+button#playPause {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: none;
+  background: rgba(255, 220, 180, 0.6);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  color: #4a2f1a;
+  transition: background 0.2s;
+}
+
+button#playPause:hover {
+  background: rgba(255, 220, 180, 0.9);
+}
+
+/* progress bar */
+#progressBar {
+  width: 300px;
+  height: 6px;
+  background: rgba(255, 220, 180, 0.3);
+  border-radius: 3px;
+  overflow: hidden;
+  cursor: pointer;
+  position: relative;
+}
+
+#progress {
+  height: 100%;
+  width: 0%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,220,180,0.8));
+  border-radius: 3px;
+  transition: width 0.1s linear;
+}
+
+/* volume bar */
+#volumeBar {
+  width: 6px;
+  height: 40px;
+  background: rgba(255,220,180,0.3);
+  border-radius: 3px;
+  cursor: pointer;
+  position: relative;
+  display: flex;
+  flex-direction: column-reverse;
+  overflow: hidden;
+}
+
+#volumeLevel {
+  width: 100%;
+  height: 100%;
+  background: rgba(255,220,180,0.8);
+  border-radius: 3px;
+  transition: height 0.1s linear;
+}
+
+/* hover glow on video */
+.video-container:hover video {
+  filter: brightness(1.05) sepia(0.1);
+  transition: filter 0.3s;
+}
 </style>
 </head>
-
 <body>
 
 <h1>THE LIGHTKEEPER</h1>
 
 <div class="video-container">
-  <video src="videos/teaser.mp4" controls loop playsinline></video>
+  <video id="myVideo" src="videos/teaser.mp4" loop playsinline></video>
+
+  <div class="controls">
+    <button id="playPause">▶</button>
+
+    <div id="progressBar">
+      <div id="progress"></div>
+    </div>
+
+    <div id="volumeBar">
+      <div id="volumeLevel"></div>
+    </div>
+  </div>
 </div>
 
 <h3>FIRST WAVES</h3>
+
+<script>
+// video and controls
+const video = document.getElementById("myVideo");
+const playBtn = document.getElementById("playPause");
+const progress = document.getElementById("progress");
+const progressBar = document.getElementById("progressBar");
+const volumeBar = document.getElementById("volumeBar");
+const volumeLevel = document.getElementById("volumeLevel");
+
+// play/pause
+playBtn.addEventListener("click", () => {
+  if(video.paused) {
+    video.play();
+    playBtn.textContent = "❚❚";
+  } else {
+    video.pause();
+    playBtn.textContent = "▶";
+  }
+});
+
+// update progress bar
+video.addEventListener("timeupdate", () => {
+  const percent = (video.currentTime / video.duration) * 100;
+  progress.style.width = percent + "%";
+});
+
+// seek by clicking progress
+progressBar.addEventListener("click", e => {
+  const rect = progressBar.getBoundingClientRect();
+  const clickX = e.clientX - rect.left;
+  const percent = clickX / rect.width;
+  video.currentTime = percent * video.duration;
+});
+
+// volume control
+volumeBar.addEventListener("click", e => {
+  const rect = volumeBar.getBoundingClientRect();
+  const clickY = e.clientY - rect.top;
+  const percent = 1 - (clickY / rect.height);
+  video.volume = percent;
+  volumeLevel.style.height = (percent * 100) + "%";
+});
+
+// initialize volume
+volumeLevel.style.height = (video.volume * 100) + "%";
+</script>
 
 </body>
 </html>
