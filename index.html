@@ -6,16 +6,28 @@
 <title>THE LIGHTKEEPER</title>
 <style>
   @font-face {
-  font-family: 'Gallery';
-  src: url('fonts/gallery.woff2') format('woff2'),
-       url('fonts/gallery.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
-}
+    font-family: 'Gallery';
+    src: url('fonts/gallery.woff2') format('woff2'),
+         url('fonts/gallery.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+  }
 
-body {
-  font-family: 'Gallery', sans-serif;
-}
+  html, body {
+    height: 100%;
+    margin: 0;
+    background-color: #704214; /* sepia */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  body {
+    font-family: 'Gallery', sans-serif;
+    color: white;
+    font-size: 6vw; /* scales with screen width */
+    text-align: center;
+  }
 </style>
 </head>
 <body>
