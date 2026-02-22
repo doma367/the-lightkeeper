@@ -14,7 +14,7 @@ body::after {
   pointer-events: none;
   z-index: 9999;
   background-image: url("images/noise.png");
-  opacity: 0.08;
+  opacity: 0.1;
   animation: grainMove 1s steps(4) infinite;
 }
 
@@ -25,7 +25,21 @@ body::after {
   100% { transform: translate(0,0); }
 }
 
-* { box-sizing: border-box; }
+/* CUSTOM FONT RESTORATION */
+@font-face {
+  font-family: "Gallery";
+  src: url("fonts/gallery.woff2") format("woff2");
+}
+
+* { 
+  box-sizing: border-box; 
+  /* Prevent all text selection */
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 html, body { height: 100dvh; margin: 0; background-color: #0f0d0c; overflow: hidden; }
 
 body {
@@ -37,14 +51,13 @@ body {
 }
 
 h1 {
-  margin: 2vh 0;
-  font-size: clamp(1.5rem, 5vw, 4rem);
-  letter-spacing: 0.3em;
-  font-weight: 300;
-  opacity: 0.8;
+  margin: 3vh 0 1vh 0;
+  font-size: clamp(1.5rem, 6vw, 5rem);
+  letter-spacing: 0.2em;
+  font-weight: normal;
 }
 
-/* 100% FRAME VISIBILITY CONTAINER */
+/* 100% FRAME VISIBILITY */
 .video-container {
   flex: 1;
   display: flex;
@@ -52,117 +65,102 @@ h1 {
   align-items: center;
   position: relative;
   padding: 20px;
-  width: 100%;
 }
 
-/* THE LIGHTHOUSE PULSE (Now a frame halo) */
 .video-frame {
   position: relative;
-  display: flex;
   max-width: 100%;
   max-height: 100%;
-  border: 1px solid rgba(201, 173, 141, 0.3);
+  border-radius: 20px; /* Requested border radius */
+  overflow: hidden;
   background: #000;
-  /* The "Pulse" logic */
-  box-shadow: 0 0 20px rgba(255, 210, 120, 0);
-  transition: box-shadow 0.5s ease;
+  /* Pulsing Halo (No visible border line) */
+  box-shadow: 0 0 0px rgba(255, 210, 120, 0);
+  transition: box-shadow 0.6s ease;
 }
 
 .video-frame.playing {
-  animation: lighthouseHalo 4s infinite alternate ease-in-out;
+  animation: lighthouseHalo 5s infinite alternate ease-in-out;
 }
 
 @keyframes lighthouseHalo {
-  0% { box-shadow: 0 0 15px rgba(255, 210, 120, 0.1); border-color: rgba(201, 173, 141, 0.2); }
-  100% { box-shadow: 0 0 60px rgba(255, 210, 120, 0.4); border-color: rgba(255, 210, 120, 0.6); }
+  0% { box-shadow: 0 0 20px rgba(255, 210, 120, 0.05); }
+  100% { box-shadow: 0 0 80px rgba(255, 210, 120, 0.25); }
+}
+
+/* Internal Vignette Overlay */
+.video-frame::after {
+  content: "";
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+  /* Inset shadow creates the vignette on the video itself */
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.6); 
+  border-radius: 20px;
 }
 
 video {
   max-width: 100%;
-  max-height: 70vh; /* Keeps room for text/controls */
+  max-height: 75vh;
   display: block;
-  filter: sepia(15%) contrast(110%);
+  object-fit: contain;
 }
 
 /* ANALOG CONTROLS */
 .controls {
   position: absolute;
-  bottom: 4vh;
+  bottom: 5%;
   display: flex;
   align-items: center;
-  gap: 2rem;
+  gap: 1.5rem;
   background: #1a1614;
-  padding: 15px 30px;
-  border: 2px solid #3d342b;
-  box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.8);
-  border-radius: 4px;
+  padding: 12px 25px;
+  border: 1px solid #2d2824;
+  box-shadow: 0 10px 40px rgba(0,0,0,0.7);
+  border-radius: 8px;
   z-index: 10;
 }
 
-/* Brass Button */
 button#playPause {
-  width: 50px;
-  height: 50px;
-  background: radial-gradient(circle, #c9ad8d 0%, #8a6f4d 100%);
-  border: 2px solid #4a3f35;
-  border-radius: 50%;
+  width: 44px;
+  height: 44px;
+  background: #c9ad8d;
+  border: none;
+  border-radius: 4px; /* More square/industrial */
   cursor: pointer;
-  font-size: 1.2rem;
-  color: #2b231c;
-  box-shadow: 0 4px 0 #4a3f35;
-  transition: all 0.1s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  font-family: "Gallery", serif;
+  font-size: 1rem;
+  color: #1a1614;
+  transition: background 0.3s;
 }
 
-button#playPause:active {
-  transform: translateY(3px);
-  box-shadow: 0 1px 0 #4a3f35;
+button#playPause:hover {
+  background: #e0cca8;
 }
 
-/* The Tuning Slider (Progress) */
 #progressBar {
-  width: 300px;
-  height: 12px;
-  background: #0a0908;
-  border: 1px solid #3d342b;
+  width: 280px;
+  height: 4px;
+  background: #2d2824;
   position: relative;
-  cursor: crosshair;
+  cursor: pointer;
 }
 
 #progress {
   height: 100%;
   width: 0%;
-  background: repeating-linear-gradient(
-    90deg,
-    #c9ad8d,
-    #c9ad8d 2px,
-    #a7896a 2px,
-    #a7896a 4px
-  );
-}
-
-/* Needle/Marker */
-#progress::after {
-  content: "";
-  position: absolute;
-  right: -2px;
-  top: -5px;
-  width: 4px;
-  height: 20px;
-  background: #ff4d4d; /* Red analog needle */
-  box-shadow: 0 0 5px rgba(255,0,0,0.5);
+  background: #c9ad8d;
 }
 
 /* Volume Gauge */
 #volumeBar {
-  width: 15px;
-  height: 50px;
-  background: #0a0908;
-  border: 1px solid #3d342b;
+  width: 12px;
+  height: 40px;
+  background: #2d2824;
   display: flex;
   flex-direction: column-reverse;
+  cursor: pointer;
 }
 
 #volumeLevel {
@@ -172,10 +170,10 @@ button#playPause:active {
 }
 
 h3 {
-  margin: 2vh 0 4vh 0;
-  letter-spacing: 0.6em;
-  font-size: 0.9rem;
-  opacity: 0.5;
+  margin: 1vh 0 4vh 0;
+  letter-spacing: 0.5em;
+  font-size: 0.8rem;
+  opacity: 0.6;
 }
 </style>
 </head>
@@ -210,7 +208,6 @@ const progressBar = document.getElementById("progressBar");
 const volumeBar = document.getElementById("volumeBar");
 const volumeLevel = document.getElementById("volumeLevel");
 
-// Play/Pause with Light Pulse trigger
 playBtn.addEventListener("click", () => {
   if (video.paused) {
     video.play();
@@ -223,20 +220,17 @@ playBtn.addEventListener("click", () => {
   }
 });
 
-// Update Progress Needle
 video.addEventListener("timeupdate", () => {
   const percent = (video.currentTime / video.duration) * 100;
   progress.style.width = percent + "%";
 });
 
-// Analog Seeking
 progressBar.addEventListener("click", e => {
   const rect = progressBar.getBoundingClientRect();
   const percent = (e.clientX - rect.left) / rect.width;
   video.currentTime = percent * video.duration;
 });
 
-// Volume Gauge
 volumeBar.addEventListener("click", e => {
   const rect = volumeBar.getBoundingClientRect();
   let percent = 1 - ((e.clientY - rect.top) / rect.height);
