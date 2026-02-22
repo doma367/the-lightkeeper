@@ -76,12 +76,37 @@ h3 {
   padding: 2vh 0;
 }
 
+/* pulsating lighthouse light behind video */
+.video-container::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 120%;
+  height: 120%;
+  background: radial-gradient(circle, rgba(255,220,180,0.15) 0%, rgba(255,220,180,0) 70%);
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  animation: pulseLight 3s ease-in-out infinite alternate;
+  z-index: 1;
+}
+
+/* lighthouse pulse animation */
+@keyframes pulseLight {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.12; }
+  100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.18; }
+}
+
 /* hide default controls */
 video {
   max-width: 100%;
   max-height: 100%;
   object-fit: contain;
   display: block;
+  position: relative;
+  z-index: 2;
+  border-radius: 10px; /* subtle vignette effect */
+  box-shadow: inset 0 0 80px rgba(255,220,180,0.2), 0 0 30px rgba(255,220,180,0.1);
 }
 
 /* custom controls overlay */
@@ -93,33 +118,35 @@ video {
   display: flex;
   align-items: center;
   gap: 1rem;
-  z-index: 10;
+  z-index: 3;
 }
 
 button#playPause {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: none;
-  background: rgba(255, 220, 180, 0.6);
+  border: 2px solid rgba(255,220,180,0.8);
+  background: rgba(255,220,180,0.2);
   cursor: pointer;
   display: flex;
   align-items: center;
   justify-content: center;
   font-size: 1rem;
   color: #4a2f1a;
-  transition: background 0.2s;
+  box-shadow: 0 0 8px rgba(255,220,180,0.3);
+  transition: background 0.2s, transform 0.2s;
 }
 
 button#playPause:hover {
-  background: rgba(255, 220, 180, 0.9);
+  transform: scale(1.1);
+  background: rgba(255,220,180,0.3);
 }
 
 /* progress bar */
 #progressBar {
   width: 300px;
   height: 6px;
-  background: rgba(255, 220, 180, 0.3);
+  background: rgba(255,220,180,0.2);
   border-radius: 3px;
   overflow: hidden;
   cursor: pointer;
@@ -129,7 +156,7 @@ button#playPause:hover {
 #progress {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, rgba(255,255,255,0.8), rgba(255,220,180,0.8));
+  background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,220,180,0.7));
   border-radius: 3px;
   transition: width 0.1s linear;
 }
@@ -138,7 +165,7 @@ button#playPause:hover {
 #volumeBar {
   width: 6px;
   height: 40px;
-  background: rgba(255,220,180,0.3);
+  background: rgba(255,220,180,0.2);
   border-radius: 3px;
   cursor: pointer;
   position: relative;
@@ -150,15 +177,9 @@ button#playPause:hover {
 #volumeLevel {
   width: 100%;
   height: 100%;
-  background: rgba(255,220,180,0.8);
+  background: rgba(255,220,180,0.7);
   border-radius: 3px;
   transition: height 0.1s linear;
-}
-
-/* hover glow on video */
-.video-container:hover video {
-  filter: brightness(1.05) sepia(0.1);
-  transition: filter 0.3s;
 }
 </style>
 </head>
