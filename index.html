@@ -5,17 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>THE LIGHTKEEPER</title>
 <style>
-/* High-Performance SVG Grain Overlay */
+/* High-Performance High-Visibility Grain */
 body::after {
   content: "";
   position: fixed;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
-  opacity: 0.06; /* Subtle grain */
+  /* Slightly larger than viewport to allow for the jitter shift without gaps */
+  top: -2%; left: -2%;
+  width: 104%; height: 104%;
+  opacity: 0.18; /* Significant visibility boost */
   z-index: 9999;
   pointer-events: none;
-  /* Generates noise via SVG filter for zero lag */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3e%3cfilter id='noiseFilter'%3e%3cturbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3e%3c/svg%3e");
+  /* Denser fractal noise for a grit-like texture */
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3e%3cfilter id='noiseFilter'%3e%3cturbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3e%3c/svg%3e");
+  /* Fast 2-step jitter to mimic film flicker without lag */
+  animation: grainJitter 0.15s steps(2) infinite;
+}
+
+@keyframes grainJitter {
+  0% { transform: translate(0,0); }
+  50% { transform: translate(-5px, -5px); }
+  100% { transform: translate(0,0); }
 }
 
 @font-face {
@@ -26,12 +35,14 @@ body::after {
 * { 
   box-sizing: border-box; 
   -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
   user-select: none;
   outline: none;
 }
 
 html, body { 
-  height: 100%; 
+  height: 100dvh; 
   margin: 0; 
   background-color: #0d0b0a; 
   overflow: hidden; 
@@ -53,14 +64,14 @@ h1 {
   flex-shrink: 0;
 }
 
-/* 100% Frame Visibility Container */
+/* 100% Frame Visibility */
 .video-container {
   flex: 1;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 0; /* Allows container to shrink on small screens */
+  min-height: 0;
   padding: 10px;
 }
 
@@ -82,18 +93,18 @@ h1 {
   top: 0; left: 0;
   width: 100%; height: 100%;
   pointer-events: none;
-  box-shadow: inset 0 0 100px rgba(0,0,0,0.8);
+  box-shadow: inset 0 0 100px rgba(0,0,0,0.85);
   border-radius: 12px;
 }
 
 video {
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain; /* 100% of frame visible */
+  object-fit: contain;
   display: block;
 }
 
-/* Analog Controls */
+/* Minimalist Analog Controls */
 .controls-wrapper {
   padding: 20px 0;
   display: flex;
@@ -112,7 +123,7 @@ video {
   border-radius: 4px;
 }
 
-/* Minimalist Plain Button */
+/* Plain Button - No labels or icons */
 button#playPause {
   width: 32px;
   height: 32px;
@@ -120,12 +131,8 @@ button#playPause {
   border: none;
   border-radius: 2px;
   cursor: pointer;
-  transition: transform 0.1s, opacity 0.2s;
+  transition: opacity 0.2s;
   flex-shrink: 0;
-}
-
-button#playPause:active {
-  transform: scale(0.95);
 }
 
 #progressBar {
@@ -133,7 +140,6 @@ button#playPause:active {
   height: 3px;
   background: #2d2824;
   cursor: pointer;
-  position: relative;
 }
 
 #progress {
@@ -157,20 +163,14 @@ button#playPause:active {
   background: #8a6f4d;
 }
 
+/* Anchored Title at Bottom */
 h3 {
   margin: 0;
-  padding: 0 0 4vh 0; /* Space from bottom of page */
+  padding: 0 0 4vh 0;
   letter-spacing: 0.6em;
   font-size: clamp(0.7rem, 2vw, 0.9rem);
   opacity: 0.5;
   flex-shrink: 0;
-}
-
-/* Mobile Specific Fixes */
-@media (max-width: 600px) {
-  .controls {
-    padding: 10px 15px;
-  }
 }
 </style>
 </head>
