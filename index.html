@@ -5,28 +5,26 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>THE LIGHTKEEPER</title>
 <style>
-/* HIGH-INTENSITY GRAIN OVERLAY */
-#grain-overlay {
+/* grain overlay */
+body::after {
+  content: "";
   position: fixed;
-  top: -50%;
-  left: -50%;
-  width: 200%;
-  height: 200%;
-  /* High contrast noise for that gritty film look */
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3e%3cfilter id='n'%3e%3cturbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4' stitchTiles='stitch'/%3e%3c/filter%3e%3crect width='100%25' height='100%25' filter='url(%23n)'/%3e%3c/svg%3e");
-  opacity: 0.18; /* Increased visibility */
-  z-index: 1000;
+  top: -100%; left: -100%;
+  width: 300%; height: 300%;
   pointer-events: none;
-  animation: grain-flicker 0.2s steps(2) infinite;
+  z-index: 9999;
+  background-image: url("images/noise.png");
+  opacity: 0.1;
+  animation: grainMove 1s steps(4) infinite;
 }
 
-@keyframes grain-flicker {
-  0% { transform: translate(0, 0); }
-  50% { transform: translate(-1%, -1%); }
-  100% { transform: translate(1%, 1%); }
+@keyframes grainMove {
+  0% { transform: translate(0,0); }
+  25% { transform: translate(-5%,3%); }
+  50% { transform: translate(4%,-6%); }
+  100% { transform: translate(0,0); }
 }
 
-/* FONT */
 @font-face {
   font-family: "Gallery";
   src: url("fonts/gallery.woff2") format("woff2");
@@ -36,102 +34,102 @@
   box-sizing: border-box; 
   -webkit-user-select: none;
   user-select: none;
-  outline: none;
 }
 
+/* Ensure the layout fits the viewport perfectly on mobile and desktop */
 html, body { 
   height: 100%; 
   margin: 0; 
-  background-color: #0d0b0a; 
+  background-color: #0f0d0c; 
   overflow: hidden; 
-  display: flex;
-  flex-direction: column;
 }
 
 body {
+  display: flex;
+  flex-direction: column;
   font-family: "Gallery", serif;
   color: #c9ad8d;
   text-align: center;
-  justify-content: space-between; /* Keeps H1 top, Content mid, H3 bottom */
-  padding: env(safe-area-inset-top) 0 env(safe-area-inset-bottom) 0;
+  padding: 0 10px;
 }
 
 h1 {
   margin: 2vh 0;
-  font-size: clamp(1.8rem, 8vw, 4.5rem);
-  letter-spacing: 0.25em;
+  font-size: clamp(1.2rem, 8vw, 4rem);
+  letter-spacing: 0.3em;
   font-weight: normal;
 }
 
-/* THE VIDEO UNIT: Keeps frame and controls together */
-.video-unit {
+/* Responsive Video Container */
+.video-container {
+  flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
   justify-content: center;
+  align-items: center;
+  min-height: 0; /* Important for flex child scaling */
   gap: 20px;
-  flex: 1;
-  min-height: 0;
-  width: 100%;
-  padding: 0 15px;
 }
 
 .video-frame {
   position: relative;
   max-width: 100%;
-  max-height: 65vh; /* Prevents video from pushing controls off-screen */
+  max-height: calc(100% - 120px); /* Reserves space for controls/titles */
   border-radius: 12px;
   overflow: hidden;
   background: #000;
-  display: flex;
-  box-shadow: 0 20px 60px rgba(0,0,0,0.6);
 }
 
-/* Internal Vignette */
+/* Internal Vignette Only (Glow Removed) */
 .video-frame::after {
   content: "";
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
   pointer-events: none;
-  box-shadow: inset 0 0 120px rgba(0,0,0,0.9);
+  box-shadow: inset 0 0 80px rgba(0,0,0,0.8);
   border-radius: 12px;
 }
 
 video {
   max-width: 100%;
   max-height: 100%;
-  object-fit: contain;
   display: block;
+  object-fit: contain;
 }
 
-/* ANALOG CONTROLS */
+/* ANALOG CONTROLS - Mobile Responsive */
 .controls {
   display: flex;
   align-items: center;
-  gap: clamp(12px, 4vw, 25px);
+  justify-content: center;
+  gap: clamp(10px, 4vw, 25px);
   background: #1a1614;
-  padding: 12px 20px;
+  padding: 10px 20px;
   border: 1px solid #2d2824;
-  border-radius: 4px;
+  border-radius: 6px;
   width: fit-content;
-  z-index: 1001; /* Above grain if needed, but below is usually better for "artsy" */
+  max-width: 95vw;
 }
 
-/* Minimalist Button */
+/* Plain Button - No Label/Icon */
 button#playPause {
-  width: 34px;
-  height: 34px;
+  width: 36px;
+  height: 36px;
   background: #c9ad8d;
-  border: none;
-  border-radius: 2px;
+  border: 1px solid #a7896a;
+  border-radius: 4px;
   cursor: pointer;
   transition: opacity 0.2s;
   flex-shrink: 0;
 }
 
+button#playPause:active {
+  opacity: 0.7;
+}
+
 #progressBar {
-  width: clamp(120px, 35vw, 280px);
+  width: clamp(100px, 40vw, 300px);
   height: 4px;
   background: #2d2824;
   cursor: pointer;
@@ -144,8 +142,8 @@ button#playPause {
 }
 
 #volumeBar {
-  width: 12px;
-  height: 34px;
+  width: 10px;
+  height: 30px;
   background: #2d2824;
   display: flex;
   flex-direction: column-reverse;
@@ -160,26 +158,19 @@ button#playPause {
 
 h3 {
   margin: 0;
-  padding: 2vh 0 4vh 0;
-  letter-spacing: 0.6em;
-  font-size: clamp(0.7rem, 2vw, 0.9rem);
-  opacity: 0.5;
-}
-
-/* Mobile Tweak: Ensure unit doesn't collapse */
-@media (max-width: 600px) {
-  .video-unit { gap: 15px; }
-  .video-frame { max-height: 50vh; }
+  padding: 20px 0; /* Ensures space at the bottom of the page */
+  letter-spacing: 0.5em;
+  font-size: clamp(0.6rem, 3vw, 0.8rem);
+  opacity: 0.6;
+  flex-shrink: 0;
 }
 </style>
 </head>
 <body>
 
-<div id="grain-overlay"></div>
-
 <h1>THE LIGHTKEEPER</h1>
 
-<div class="video-unit">
+<div class="video-container">
   <div class="video-frame">
     <video id="myVideo" src="videos/teaser.mp4" loop playsinline></video>
   </div>
@@ -208,7 +199,7 @@ const volumeLevel = document.getElementById("volumeLevel");
 playBtn.addEventListener("click", () => {
   if (video.paused) {
     video.play();
-    playBtn.style.opacity = "0.4";
+    playBtn.style.opacity = "0.5"; // Subtle visual state change
   } else {
     video.pause();
     playBtn.style.opacity = "1";
