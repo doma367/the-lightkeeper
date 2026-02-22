@@ -4,7 +4,6 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>THE LIGHTKEEPER</title>
-
 <style>
 /* grain overlay */
 body::after {
@@ -23,11 +22,11 @@ body::after {
 }
 
 @keyframes grainMove {
-  0%   { transform: translate(0, 0); }
-  25%  { transform: translate(-5%, 3%); }
-  50%  { transform: translate(4%, -6%); }
-  75%  { transform: translate(-3%, 5%); }
-  100% { transform: translate(0, 0); }
+  0%   { transform: translate(0,0); }
+  25%  { transform: translate(-5%,3%); }
+  50%  { transform: translate(4%,-6%); }
+  75%  { transform: translate(-3%,5%); }
+  100% { transform: translate(0,0); }
 }
 
 /* font */
@@ -76,28 +75,26 @@ h3 {
   padding: 2vh 0;
 }
 
-/* pulsating lighthouse light behind video */
-.video-container::before {
-  content: "";
+/* lighthouse pulse behind video */
+.pulse-light {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 120%;
-  height: 120%;
-  background: radial-gradient(circle, rgba(255,220,180,0.15) 0%, rgba(255,220,180,0) 70%);
-  transform: translate(-50%, -50%);
+  width: 140%;
+  height: 140%;
+  transform: translate(-50%,-50%);
+  background: radial-gradient(circle, rgba(255,220,150,0.15) 0%, rgba(255,220,150,0) 70%);
   border-radius: 50%;
-  animation: pulseLight 3s ease-in-out infinite alternate;
   z-index: 1;
+  animation: pulse 3s ease-in-out infinite alternate;
 }
 
-/* lighthouse pulse animation */
-@keyframes pulseLight {
-  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.12; }
-  100% { transform: translate(-50%, -50%) scale(1.1); opacity: 0.18; }
+@keyframes pulse {
+  0% { transform: translate(-50%,-50%) scale(1); opacity: 0.12; }
+  100% { transform: translate(-50%,-50%) scale(1.1); opacity: 0.18; }
 }
 
-/* hide default controls */
+/* video with real vignette */
 video {
   max-width: 100%;
   max-height: 100%;
@@ -105,11 +102,19 @@ video {
   display: block;
   position: relative;
   z-index: 2;
-  border-radius: 10px; /* subtle vignette effect */
-  box-shadow: inset 0 0 80px rgba(255,220,180,0.2), 0 0 30px rgba(255,220,180,0.1);
 }
 
-/* custom controls overlay */
+video::after {
+  content:"";
+  position:absolute;
+  top:0; left:0;
+  width:100%; height:100%;
+  border-radius: 10px;
+  pointer-events:none;
+  background: radial-gradient(circle, rgba(0,0,0,0.15) 70%, rgba(0,0,0,0.35) 100%);
+}
+
+/* controls overlay */
 .controls {
   position: absolute;
   bottom: 5%;
@@ -125,28 +130,22 @@ button#playPause {
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 2px solid rgba(255,220,180,0.8);
-  background: rgba(255,220,180,0.2);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 1rem;
+  border: none;
+  background: rgba(255,220,150,0.8);
   color: #4a2f1a;
-  box-shadow: 0 0 8px rgba(255,220,180,0.3);
-  transition: background 0.2s, transform 0.2s;
+  cursor: pointer;
+  font-size: 1rem;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+  transition: transform 0.2s;
 }
 
-button#playPause:hover {
-  transform: scale(1.1);
-  background: rgba(255,220,180,0.3);
-}
+button#playPause:hover { transform: scale(1.1); }
 
 /* progress bar */
 #progressBar {
   width: 300px;
   height: 6px;
-  background: rgba(255,220,180,0.2);
+  background: rgba(255,220,150,0.3);
   border-radius: 3px;
   overflow: hidden;
   cursor: pointer;
@@ -156,7 +155,7 @@ button#playPause:hover {
 #progress {
   height: 100%;
   width: 0%;
-  background: linear-gradient(90deg, rgba(255,255,255,0.7), rgba(255,220,180,0.7));
+  background: linear-gradient(90deg, rgba(255,220,180,0.8), rgba(255,200,140,0.8));
   border-radius: 3px;
   transition: width 0.1s linear;
 }
@@ -165,10 +164,9 @@ button#playPause:hover {
 #volumeBar {
   width: 6px;
   height: 40px;
-  background: rgba(255,220,180,0.2);
+  background: rgba(255,220,150,0.3);
   border-radius: 3px;
   cursor: pointer;
-  position: relative;
   display: flex;
   flex-direction: column-reverse;
   overflow: hidden;
@@ -177,7 +175,7 @@ button#playPause:hover {
 #volumeLevel {
   width: 100%;
   height: 100%;
-  background: rgba(255,220,180,0.7);
+  background: rgba(255,220,150,0.8);
   border-radius: 3px;
   transition: height 0.1s linear;
 }
@@ -188,15 +186,14 @@ button#playPause:hover {
 <h1>THE LIGHTKEEPER</h1>
 
 <div class="video-container">
+  <div class="pulse-light"></div>
   <video id="myVideo" src="videos/teaser.mp4" loop playsinline></video>
 
   <div class="controls">
     <button id="playPause">▶</button>
-
     <div id="progressBar">
       <div id="progress"></div>
     </div>
-
     <div id="volumeBar">
       <div id="volumeLevel"></div>
     </div>
@@ -206,7 +203,6 @@ button#playPause:hover {
 <h3>FIRST WAVES</h3>
 
 <script>
-// video and controls
 const video = document.getElementById("myVideo");
 const playBtn = document.getElementById("playPause");
 const progress = document.getElementById("progress");
@@ -217,21 +213,19 @@ const volumeLevel = document.getElementById("volumeLevel");
 // play/pause
 playBtn.addEventListener("click", () => {
   if(video.paused) {
-    video.play();
-    playBtn.textContent = "❚❚";
+    video.play(); playBtn.textContent = "❚❚";
   } else {
-    video.pause();
-    playBtn.textContent = "▶";
+    video.pause(); playBtn.textContent = "▶";
   }
 });
 
-// update progress bar
+// progress bar update
 video.addEventListener("timeupdate", () => {
   const percent = (video.currentTime / video.duration) * 100;
   progress.style.width = percent + "%";
 });
 
-// seek by clicking progress
+// seek
 progressBar.addEventListener("click", e => {
   const rect = progressBar.getBoundingClientRect();
   const clickX = e.clientX - rect.left;
@@ -239,7 +233,7 @@ progressBar.addEventListener("click", e => {
   video.currentTime = percent * video.duration;
 });
 
-// volume control
+// volume
 volumeBar.addEventListener("click", e => {
   const rect = volumeBar.getBoundingClientRect();
   const clickY = e.clientY - rect.top;
@@ -248,7 +242,7 @@ volumeBar.addEventListener("click", e => {
   volumeLevel.style.height = (percent * 100) + "%";
 });
 
-// initialize volume
+// init volume
 volumeLevel.style.height = (video.volume * 100) + "%";
 </script>
 
