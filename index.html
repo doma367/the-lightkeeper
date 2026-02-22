@@ -9,235 +9,173 @@
 body::after {
   content: "";
   position: fixed;
-  top: -100%;
-  left: -100%;
-  width: 300%;
-  height: 300%;
+  top: -100%; left: -100%;
+  width: 300%; height: 300%;
   pointer-events: none;
   z-index: 9999;
-  background-image: url("images/noise.png"); /* ensure you have this or it falls back gracefully */
-  background-repeat: repeat;
-  opacity: 0.12;
+  background-image: url("images/noise.png");
+  opacity: 0.08;
   animation: grainMove 1s steps(4) infinite;
 }
 
 @keyframes grainMove {
-  0%   { transform: translate(0,0); }
-  25%  { transform: translate(-5%,3%); }
-  50%  { transform: translate(4%,-6%); }
-  75%  { transform: translate(-3%,5%); }
+  0% { transform: translate(0,0); }
+  25% { transform: translate(-5%,3%); }
+  50% { transform: translate(4%,-6%); }
   100% { transform: translate(0,0); }
 }
 
-/* font */
-@font-face {
-  font-family: "Gallery";
-  src: url("fonts/gallery.woff2") format("woff2");
-}
-
 * { box-sizing: border-box; }
-
-html, body { height: 100dvh; margin: 0; }
+html, body { height: 100dvh; margin: 0; background-color: #0f0d0c; overflow: hidden; }
 
 body {
   display: flex;
   flex-direction: column;
-  background-color: #1a1614; /* Darkened the background slightly to make the video pop more */
-  font-family: "Gallery", sans-serif;
-  color: #e0cca8;
+  font-family: "Gallery", serif;
+  color: #c9ad8d;
   text-align: center;
-  overflow: hidden;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
 
-/* Cinematic Typography */
 h1 {
-  margin: 3vh 0 0 0;
-  font-size: clamp(2rem, 6vw, 6rem);
-  letter-spacing: 0.15em;
-  font-weight: normal;
-  text-transform: uppercase;
-  user-select: none;
-  flex-shrink: 0;
-  opacity: 0.9;
+  margin: 2vh 0;
+  font-size: clamp(1.5rem, 5vw, 4rem);
+  letter-spacing: 0.3em;
+  font-weight: 300;
+  opacity: 0.8;
 }
 
-h3 {
-  margin: 0 0 3vh 0;
-  font-size: clamp(0.8rem, 2vw, 1.5rem);
-  letter-spacing: 0.4em;
-  font-weight: normal;
-  color: #a7896a;
-  flex-shrink: 0;
-  user-select: none;
-  opacity: 0.7;
-}
-
-/* video container */
+/* 100% FRAME VISIBILITY CONTAINER */
 .video-container {
   flex: 1;
-  min-height: 0;
   display: flex;
   justify-content: center;
   align-items: center;
   position: relative;
-  padding: 2vh 0;
-  cursor: default;
+  padding: 20px;
+  width: 100%;
 }
 
-/* lighthouse pulse behind video */
-.pulse-light {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 140%;
-  height: 140%;
-  transform: translate(-50%,-50%);
-  background: radial-gradient(circle, rgba(255,220,150,0.12) 0%, rgba(255,220,150,0) 60%);
-  border-radius: 50%;
-  z-index: 1;
-  animation: pulse 4s ease-in-out infinite alternate;
-  transition: opacity 1s ease;
-}
-
-/* Class added via JS to pause the light when video is paused */
-.pulse-light.is-paused {
-  opacity: 0;
-  animation-play-state: paused;
-}
-
-@keyframes pulse {
-  0% { transform: translate(-50%,-50%) scale(0.95); opacity: 0.05; }
-  100% { transform: translate(-50%,-50%) scale(1.05); opacity: 0.15; }
-}
-
-/* structural fix for the vignette */
+/* THE LIGHTHOUSE PULSE (Now a frame halo) */
 .video-frame {
   position: relative;
-  max-width: 90%;
-  max-height: 90%;
-  z-index: 2;
-  border-radius: 12px;
-  overflow: hidden;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.5);
+  display: flex;
+  max-width: 100%;
+  max-height: 100%;
+  border: 1px solid rgba(201, 173, 141, 0.3);
+  background: #000;
+  /* The "Pulse" logic */
+  box-shadow: 0 0 20px rgba(255, 210, 120, 0);
+  transition: box-shadow 0.5s ease;
 }
 
-/* video with color grading filter */
+.video-frame.playing {
+  animation: lighthouseHalo 4s infinite alternate ease-in-out;
+}
+
+@keyframes lighthouseHalo {
+  0% { box-shadow: 0 0 15px rgba(255, 210, 120, 0.1); border-color: rgba(201, 173, 141, 0.2); }
+  100% { box-shadow: 0 0 60px rgba(255, 210, 120, 0.4); border-color: rgba(255, 210, 120, 0.6); }
+}
+
 video {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
+  max-width: 100%;
+  max-height: 70vh; /* Keeps room for text/controls */
   display: block;
-  /* Cinematic color grading: slightly warm, slightly desaturated, high contrast */
-  filter: sepia(20%) saturate(85%) contrast(115%); 
+  filter: sepia(15%) contrast(110%);
 }
 
-/* The actual vignette */
-.video-frame::after {
-  content:"";
-  position:absolute;
-  top:0; left:0;
-  width:100%; height:100%;
-  pointer-events:none;
-  background: radial-gradient(circle, rgba(0,0,0,0) 50%, rgba(0,0,0,0.6) 100%);
-  box-shadow: inset 0 0 60px rgba(0,0,0,0.5); /* Inner CRT-style shadow */
-}
-
-/* Ethereal, frosted glass controls */
+/* ANALOG CONTROLS */
 .controls {
   position: absolute;
-  bottom: 8%;
-  left: 50%;
-  transform: translateX(-50%) translateY(10px);
+  bottom: 4vh;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
-  z-index: 3;
-  
-  /* Glassmorphism */
-  background: rgba(20, 15, 10, 0.4);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  padding: 10px 24px;
-  border-radius: 50px;
-  border: 1px solid rgba(255, 220, 150, 0.1);
-  
-  /* Auto-hide transition */
-  opacity: 0;
-  transition: opacity 0.5s ease, transform 0.5s ease;
+  gap: 2rem;
+  background: #1a1614;
+  padding: 15px 30px;
+  border: 2px solid #3d342b;
+  box-shadow: inset 0 0 15px rgba(0,0,0,0.5), 0 10px 30px rgba(0,0,0,0.8);
+  border-radius: 4px;
+  z-index: 10;
 }
 
-/* Show controls on hover or when moving mouse (handled by JS) */
-.video-container.show-controls .controls {
-  opacity: 1;
-  transform: translateX(-50%) translateY(0);
-}
-
+/* Brass Button */
 button#playPause {
-  width: 36px;
-  height: 36px;
+  width: 50px;
+  height: 50px;
+  background: radial-gradient(circle, #c9ad8d 0%, #8a6f4d 100%);
+  border: 2px solid #4a3f35;
   border-radius: 50%;
-  border: 1px solid rgba(255,220,150,0.3);
-  background: transparent;
-  color: #e0cca8;
   cursor: pointer;
-  font-size: 0.9rem;
+  font-size: 1.2rem;
+  color: #2b231c;
+  box-shadow: 0 4px 0 #4a3f35;
+  transition: all 0.1s;
   display: flex;
   justify-content: center;
   align-items: center;
-  transition: all 0.3s ease;
 }
 
-button#playPause:hover { 
-  background: rgba(255,220,150,0.1);
-  transform: scale(1.05); 
-  border-color: rgba(255,220,150,0.6);
+button#playPause:active {
+  transform: translateY(3px);
+  box-shadow: 0 1px 0 #4a3f35;
 }
 
-/* Slimmed down progress bar */
+/* The Tuning Slider (Progress) */
 #progressBar {
-  width: 250px;
-  height: 3px;
-  background: rgba(255,220,150,0.15);
-  border-radius: 3px;
-  cursor: pointer;
+  width: 300px;
+  height: 12px;
+  background: #0a0908;
+  border: 1px solid #3d342b;
   position: relative;
-  transition: height 0.2s ease;
+  cursor: crosshair;
 }
-
-#progressBar:hover { height: 6px; }
 
 #progress {
   height: 100%;
   width: 0%;
-  background: #e0cca8;
-  border-radius: 3px;
-  box-shadow: 0 0 10px rgba(224, 204, 168, 0.5);
-  transition: width 0.1s linear;
+  background: repeating-linear-gradient(
+    90deg,
+    #c9ad8d,
+    #c9ad8d 2px,
+    #a7896a 2px,
+    #a7896a 4px
+  );
 }
 
-/* Slimmed down volume bar */
+/* Needle/Marker */
+#progress::after {
+  content: "";
+  position: absolute;
+  right: -2px;
+  top: -5px;
+  width: 4px;
+  height: 20px;
+  background: #ff4d4d; /* Red analog needle */
+  box-shadow: 0 0 5px rgba(255,0,0,0.5);
+}
+
+/* Volume Gauge */
 #volumeBar {
-  width: 3px;
-  height: 36px;
-  background: rgba(255,220,150,0.15);
-  border-radius: 3px;
-  cursor: pointer;
+  width: 15px;
+  height: 50px;
+  background: #0a0908;
+  border: 1px solid #3d342b;
   display: flex;
   flex-direction: column-reverse;
-  transition: width 0.2s ease;
 }
-
-#volumeBar:hover { width: 6px; }
 
 #volumeLevel {
   width: 100%;
-  height: 100%;
-  background: #e0cca8;
-  border-radius: 3px;
-  box-shadow: 0 0 10px rgba(224, 204, 168, 0.5);
-  transition: height 0.1s linear;
+  height: 80%;
+  background: #8a6f4d;
+}
+
+h3 {
+  margin: 2vh 0 4vh 0;
+  letter-spacing: 0.6em;
+  font-size: 0.9rem;
+  opacity: 0.5;
 }
 </style>
 </head>
@@ -245,10 +183,8 @@ button#playPause:hover {
 
 <h1>THE LIGHTKEEPER</h1>
 
-<div class="video-container" id="videoContainer">
-  <div class="pulse-light is-paused" id="pulseLight"></div>
-  
-  <div class="video-frame">
+<div class="video-container">
+  <div class="video-frame" id="frame">
     <video id="myVideo" src="videos/teaser.mp4" loop playsinline></video>
   </div>
 
@@ -266,82 +202,48 @@ button#playPause:hover {
 <h3>FIRST WAVES</h3>
 
 <script>
-const videoContainer = document.getElementById("videoContainer");
 const video = document.getElementById("myVideo");
-const pulseLight = document.getElementById("pulseLight");
+const frame = document.getElementById("frame");
 const playBtn = document.getElementById("playPause");
 const progress = document.getElementById("progress");
 const progressBar = document.getElementById("progressBar");
 const volumeBar = document.getElementById("volumeBar");
 const volumeLevel = document.getElementById("volumeLevel");
 
-let hideControlsTimeout;
-
-// Function to show controls and reset the auto-hide timer
-function showControls() {
-  videoContainer.classList.add("show-controls");
-  clearTimeout(hideControlsTimeout);
-  
-  // Hide controls after 2.5 seconds of inactivity, but only if video is playing
-  if (!video.paused) {
-    hideControlsTimeout = setTimeout(() => {
-      videoContainer.classList.remove("show-controls");
-    }, 2500);
-  }
-}
-
-// Listen for mouse movement over the container
-videoContainer.addEventListener("mousemove", showControls);
-videoContainer.addEventListener("mouseleave", () => {
-  if (!video.paused) videoContainer.classList.remove("show-controls");
-});
-
-// play/pause logic + reactive lighting
+// Play/Pause with Light Pulse trigger
 playBtn.addEventListener("click", () => {
   if (video.paused) {
-    video.play(); 
-    playBtn.textContent = "❚❚";
-    pulseLight.classList.remove("is-paused");
-    showControls(); // start the auto-hide timer
+    video.play();
+    playBtn.textContent = "II";
+    frame.classList.add("playing");
   } else {
-    video.pause(); 
+    video.pause();
     playBtn.textContent = "▶";
-    pulseLight.classList.add("is-paused");
-    videoContainer.classList.add("show-controls"); // keep controls visible when paused
-    clearTimeout(hideControlsTimeout);
+    frame.classList.remove("playing");
   }
 });
 
-// progress bar update
+// Update Progress Needle
 video.addEventListener("timeupdate", () => {
   const percent = (video.currentTime / video.duration) * 100;
   progress.style.width = percent + "%";
 });
 
-// seek
+// Analog Seeking
 progressBar.addEventListener("click", e => {
   const rect = progressBar.getBoundingClientRect();
-  const clickX = e.clientX - rect.left;
-  const percent = clickX / rect.width;
+  const percent = (e.clientX - rect.left) / rect.width;
   video.currentTime = percent * video.duration;
 });
 
-// volume
+// Volume Gauge
 volumeBar.addEventListener("click", e => {
   const rect = volumeBar.getBoundingClientRect();
-  const clickY = e.clientY - rect.top;
-  let percent = 1 - (clickY / rect.height);
-  
-  // clamp between 0 and 1
-  percent = Math.max(0, Math.min(1, percent)); 
-  
+  let percent = 1 - ((e.clientY - rect.top) / rect.height);
+  percent = Math.max(0, Math.min(1, percent));
   video.volume = percent;
   volumeLevel.style.height = (percent * 100) + "%";
 });
-
-// init state
-volumeLevel.style.height = (video.volume * 100) + "%";
-videoContainer.classList.add("show-controls"); // show controls initially
 </script>
 
 </body>
