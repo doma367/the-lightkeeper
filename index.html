@@ -3,42 +3,58 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="theme-color" content="#704214">
 <title>THE LIGHTKEEPER</title>
 <style>
   @font-face {
     font-family: 'Gallery';
-    src: url('fonts/gallerymodern-webfont.woff2') format('woff2'),
-         url('fonts/gallerymodern-webfont.woff') format('woff');
+    src: url('fonts/gallery.woff2') format('woff2');
     font-weight: normal;
     font-style: normal;
   }
 
   html, body {
-    min-height: 100vh;
     height: 100%;
     margin: 0;
     background-color: #e4d0ac; /* sepia */
+    overflow: hidden; /* disable scrolling */
     display: flex;
-    justify-content: center;
+    flex-direction: column;
     align-items: center;
   }
 
   body {
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
     font-family: 'Gallery', sans-serif;
     color: white;
-    font-size: clamp(2rem, 6vw, 8rem);
     text-align: center;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  h1 {
+    margin: 2vh 0 0 0;
+    font-size: clamp(2rem, 6vw, 8rem);
     user-select: none;
-    -webkit-user-select: none; /* safari */
-    -moz-user-select: none; /* firefox */
-    -ms-user-select: none; /* ie/edge */
+  }
+
+  .video-container {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+  }
+
+  video {
+    max-width: 90%;
+    max-height: 80%;
+    border: none;
   }
 </style>
 </head>
 <body>
-THE LIGHTKEEPER
+<h1>THE LIGHTKEEPER</h1>
+<div class="video-container">
+  <video src="teaser.mp4" autoplay muted loop playsinline></video>
+</div>
 </body>
 </html>
