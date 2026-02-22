@@ -57,6 +57,7 @@ h1 {
   font-size: clamp(1.2rem, 8vw, 4rem);
   letter-spacing: 0.3em;
   font-weight: normal;
+  cursor: pointer;
 }
 
 .video-container {
@@ -121,23 +122,23 @@ button#playPause {
 
 #progressBar {
   width: clamp(100px, 40vw, 300px);
-  height: 12px; /* Made slightly taller for easier grabbing */
+  height: 12px;
   background: #2d2824;
   cursor: pointer;
-  touch-action: none; /* Prevents scrolling while dragging */
+  touch-action: none;
   display: flex;
   align-items: center;
 }
 
 #progress {
-  height: 4px; /* Internal bar thickness */
+  height: 4px;
   width: 0%;
   background: #c9ad8d;
   pointer-events: none;
 }
 
 #volumeBar {
-  width: 16px; /* Wider for easier grabbing */
+  width: 16px;
   height: 40px;
   background: #2d2824;
   display: flex;
@@ -161,6 +162,30 @@ h3 {
   font-size: clamp(0.6rem, 3vw, 0.8rem);
   opacity: 0.6;
   flex-shrink: 0;
+}
+
+/* hidden journal */
+#journal {
+  display: none;
+  opacity: 0;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: left;
+  line-height: 1.5em;
+  transition: opacity 1s ease-in-out;
+}
+#journal.show {
+  display: block;
+  opacity: 1;
+}
+#journal h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  letter-spacing: 0.2em;
+}
+#journal p {
+  margin: 0.5em 0;
 }
 </style>
 </head>
@@ -186,6 +211,19 @@ h3 {
 
 <h3>FIRST WAVES</h3>
 
+<!-- hidden Lightkeeper journal -->
+<div id="journal">
+  <h2>Lightkeeper Journal – Entry I</h2>
+  <p><strong>March 3, 1953</strong></p>
+  <p>the morning was clear.<br>
+  waves rolled steadily against the rocks.<br>
+  checked the lamp and the lenses; all in order.<br>
+  a gull circled overhead, then moved on.<br>
+  kept the log, inspected the keep, cleaned the rails.<br>
+  no ships today, nothing unusual.<br>
+  the light holds steady, as it always does.</p>
+</div>
+
 <script>
 const video = document.getElementById("myVideo");
 const playBtn = document.getElementById("playPause");
@@ -207,7 +245,7 @@ playBtn.addEventListener("click", () => {
 
 // Update progress bar as video plays
 video.addEventListener("timeupdate", () => {
-  if (!isDraggingProgress) { // Don't snap back while dragging
+  if (!isDraggingProgress) {
     const percent = (video.currentTime / video.duration) * 100;
     progress.style.width = percent + "%";
   }
@@ -217,7 +255,6 @@ video.addEventListener("timeupdate", () => {
 let isDraggingProgress = false;
 let isDraggingVolume = false;
 
-// Progress Bar Functions
 function scrubProgress(e) {
   const rect = progressBar.getBoundingClientRect();
   const x = e.clientX - rect.left;
@@ -227,7 +264,6 @@ function scrubProgress(e) {
   video.currentTime = percent * video.duration;
 }
 
-// Volume Bar Functions
 function scrubVolume(e) {
   const rect = volumeBar.getBoundingClientRect();
   const y = e.clientY - rect.top;
@@ -237,21 +273,19 @@ function scrubVolume(e) {
   volumeLevel.style.height = (percent * 100) + "%";
 }
 
-// Pointer Events for Progress
+// Pointer Events
 progressBar.addEventListener("pointerdown", (e) => {
   isDraggingProgress = true;
   scrubProgress(e);
   progressBar.setPointerCapture(e.pointerId);
 });
 
-// Pointer Events for Volume
 volumeBar.addEventListener("pointerdown", (e) => {
   isDraggingVolume = true;
   scrubVolume(e);
   volumeBar.setPointerCapture(e.pointerId);
 });
 
-// Global Move/Up Listeners
 window.addEventListener("pointermove", (e) => {
   if (isDraggingProgress) scrubProgress(e);
   if (isDraggingVolume) scrubVolume(e);
@@ -260,6 +294,18 @@ window.addEventListener("pointermove", (e) => {
 window.addEventListener("pointerup", (e) => {
   isDraggingProgress = false;
   isDraggingVolume = false;
+});
+
+// Lightkeeper Journal Reveal
+const title = document.querySelector("h1");
+const journal = document.getElementById("journal");
+let unlocked = false;
+
+title.addEventListener("click", () => {
+  if (!unlocked) {
+    journal.classList.add("show");
+    unlocked = true;
+  }
 });
 </script>
 
