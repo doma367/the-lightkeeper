@@ -3,6 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#704214">
 <title>THE LIGHTKEEPER</title>
 <style>
   @font-face {
@@ -14,19 +15,32 @@
   }
 
   html, body {
+    min-height: 100vh;
     height: 100%;
     margin: 0;
-    background-color: #704214; /* sepia */
+    background-color: #F6BC6B; /* sepia */
     display: flex;
     justify-content: center;
     align-items: center;
   }
 
   body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
     font-family: 'Gallery', sans-serif;
     color: white;
-    font-size: 6vw; /* scales with screen width */
+    font-size: clamp(2rem, 6vw, 8rem);
     text-align: center;
+    animation: fadeIn 2s ease-in-out;
+    user-select: none;
+    -webkit-user-select: none; /* safari */
+    -moz-user-select: none; /* firefox */
+    -ms-user-select: none; /* ie/edge */
+  }
+
+  @keyframes fadeIn {
+    0% { opacity: 0; transform: scale(0.95); }
+    100% { opacity: 1; transform: scale(1); }
   }
 </style>
 </head>
