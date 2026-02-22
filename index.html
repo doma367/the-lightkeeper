@@ -25,7 +25,6 @@ body::after {
   100% { transform: translate(0,0); }
 }
 
-/* CUSTOM FONT */
 @font-face {
   font-family: "Gallery";
   src: url("fonts/gallery.woff2") format("woff2");
@@ -34,12 +33,16 @@ body::after {
 * { 
   box-sizing: border-box; 
   -webkit-user-select: none;
-  -moz-user-select: none;
-  -ms-user-select: none;
   user-select: none;
 }
 
-html, body { height: 100dvh; margin: 0; background-color: #0f0d0c; overflow: hidden; }
+/* Ensure the layout fits the viewport perfectly on mobile and desktop */
+html, body { 
+  height: 100%; 
+  margin: 0; 
+  background-color: #0f0d0c; 
+  overflow: hidden; 
+}
 
 body {
   display: flex;
@@ -47,119 +50,88 @@ body {
   font-family: "Gallery", serif;
   color: #c9ad8d;
   text-align: center;
+  padding: 0 10px;
 }
 
 h1 {
-  margin: 3vh 0 1vh 0;
-  font-size: clamp(1.5rem, 6vw, 5rem);
-  letter-spacing: 0.2em;
+  margin: 2vh 0;
+  font-size: clamp(1.2rem, 8vw, 4rem);
+  letter-spacing: 0.3em;
   font-weight: normal;
 }
 
-/* 100% FRAME VISIBILITY */
+/* Responsive Video Container */
 .video-container {
   flex: 1;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: relative;
-  padding: 40px; /* Space for the light to spill into */
+  min-height: 0; /* Important for flex child scaling */
+  gap: 20px;
 }
 
-/* THE PROPAGATING BEAM EFFECT */
 .video-frame {
   position: relative;
   max-width: 100%;
-  max-height: 100%;
-  border-radius: 20px;
+  max-height: calc(100% - 120px); /* Reserves space for controls/titles */
+  border-radius: 12px;
+  overflow: hidden;
   background: #000;
-  display: flex;
 }
 
-/* This is the rotating beam behind the video */
-.video-frame::before {
-  content: "";
-  position: absolute;
-  top: -20px; left: -20px; right: -20px; bottom: -20px;
-  background: conic-gradient(
-    from 0deg, 
-    transparent 0deg, 
-    transparent 150deg, 
-    rgba(255, 210, 120, 0.4) 180deg, 
-    transparent 210deg, 
-    transparent 360deg
-  );
-  filter: blur(30px);
-  border-radius: 40px;
-  opacity: 0;
-  transition: opacity 1s ease;
-  z-index: -1;
-}
-
-.video-frame.playing::before {
-  opacity: 1;
-  animation: rotateBeam 6s linear infinite;
-}
-
-@keyframes rotateBeam {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
-}
-
-/* INTERNAL VIGNETTE */
+/* Internal Vignette Only (Glow Removed) */
 .video-frame::after {
   content: "";
   position: absolute;
   top: 0; left: 0;
   width: 100%; height: 100%;
   pointer-events: none;
-  box-shadow: inset 0 0 80px rgba(0,0,0,0.8); 
-  border-radius: 20px;
-  z-index: 2;
+  box-shadow: inset 0 0 80px rgba(0,0,0,0.8);
+  border-radius: 12px;
 }
 
 video {
   max-width: 100%;
-  max-height: 75vh;
+  max-height: 100%;
   display: block;
   object-fit: contain;
-  border-radius: 20px;
 }
 
-/* ANALOG CONTROLS */
+/* ANALOG CONTROLS - Mobile Responsive */
 .controls {
-  position: absolute;
-  bottom: 5%;
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  justify-content: center;
+  gap: clamp(10px, 4vw, 25px);
   background: #1a1614;
-  padding: 12px 25px;
+  padding: 10px 20px;
   border: 1px solid #2d2824;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.7);
-  border-radius: 8px;
-  z-index: 10;
-  transition: opacity 0.5s ease;
+  border-radius: 6px;
+  width: fit-content;
+  max-width: 95vw;
 }
 
+/* Plain Button - No Label/Icon */
 button#playPause {
-  width: 44px;
-  height: 44px;
+  width: 36px;
+  height: 36px;
   background: #c9ad8d;
-  border: none;
+  border: 1px solid #a7896a;
   border-radius: 4px;
   cursor: pointer;
-  font-family: "Gallery", serif;
-  font-size: 1rem;
-  color: #1a1614;
-  transition: background 0.3s;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+button#playPause:active {
+  opacity: 0.7;
 }
 
 #progressBar {
-  width: 280px;
+  width: clamp(100px, 40vw, 300px);
   height: 4px;
   background: #2d2824;
-  position: relative;
   cursor: pointer;
 }
 
@@ -170,8 +142,8 @@ button#playPause {
 }
 
 #volumeBar {
-  width: 12px;
-  height: 40px;
+  width: 10px;
+  height: 30px;
   background: #2d2824;
   display: flex;
   flex-direction: column-reverse;
@@ -185,10 +157,12 @@ button#playPause {
 }
 
 h3 {
-  margin: 1vh 0 4vh 0;
+  margin: 0;
+  padding: 20px 0; /* Ensures space at the bottom of the page */
   letter-spacing: 0.5em;
-  font-size: 0.8rem;
+  font-size: clamp(0.6rem, 3vw, 0.8rem);
   opacity: 0.6;
+  flex-shrink: 0;
 }
 </style>
 </head>
@@ -197,12 +171,12 @@ h3 {
 <h1>THE LIGHTKEEPER</h1>
 
 <div class="video-container">
-  <div class="video-frame" id="frame">
+  <div class="video-frame">
     <video id="myVideo" src="videos/teaser.mp4" loop playsinline></video>
   </div>
 
   <div class="controls">
-    <button id="playPause">▶</button>
+    <button id="playPause"></button>
     <div id="progressBar">
       <div id="progress"></div>
     </div>
@@ -216,7 +190,6 @@ h3 {
 
 <script>
 const video = document.getElementById("myVideo");
-const frame = document.getElementById("frame");
 const playBtn = document.getElementById("playPause");
 const progress = document.getElementById("progress");
 const progressBar = document.getElementById("progressBar");
@@ -226,12 +199,10 @@ const volumeLevel = document.getElementById("volumeLevel");
 playBtn.addEventListener("click", () => {
   if (video.paused) {
     video.play();
-    playBtn.textContent = "II";
-    frame.classList.add("playing");
+    playBtn.style.opacity = "0.5"; // Subtle visual state change
   } else {
     video.pause();
-    playBtn.textContent = "▶";
-    frame.classList.remove("playing");
+    playBtn.style.opacity = "1";
   }
 });
 
