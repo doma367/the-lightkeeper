@@ -234,91 +234,93 @@ h3 {
 </div>
 
 <script>
-const video = document.getElementById("myVideo");
-const playBtn = document.getElementById("playPause");
-const progress = document.getElementById("progress");
-const progressBar = document.getElementById("progressBar");
-const volumeBar = document.getElementById("volumeBar");
-const volumeLevel = document.getElementById("volumeLevel");
-const title = document.getElementById("title");
-const journal = document.getElementById("journal");
-const videoContainer = document.getElementById("videoContainer");
+const video = document.getElementById("myVideo")
+const playBtn = document.getElementById("playPause")
+const progress = document.getElementById("progress")
+const progressBar = document.getElementById("progressBar")
+const volumeBar = document.getElementById("volumeBar")
+const volumeLevel = document.getElementById("volumeLevel")
+const title = document.getElementById("title")
+const journal = document.getElementById("journal")
+const videoContainer = document.getElementById("videoContainer")
 
-let showingJournal = false;
-let isDraggingProgress = false;
-let isDraggingVolume = false;
+let showingJournal = false
+let isDraggingProgress = false
+let isDraggingVolume = false
+let wasPlaying = false
 
 playBtn.addEventListener("click", () => {
   if (video.paused) {
-    video.play();
-    playBtn.style.opacity = "0.5";
+    video.play()
+    playBtn.style.opacity = "0.5"
   } else {
-    video.pause();
-    playBtn.style.opacity = "1";
+    video.pause()
+    playBtn.style.opacity = "1"
   }
-});
+})
 
 video.addEventListener("timeupdate", () => {
   if (!isDraggingProgress && video.duration) {
-    const percent = (video.currentTime / video.duration) * 100;
-    progress.style.width = percent + "%";
+    const percent = (video.currentTime / video.duration) * 100
+    progress.style.width = percent + "%"
   }
-});
+})
 
 function scrubProgress(e) {
-  const rect = progressBar.getBoundingClientRect();
-  const x = e.clientX - rect.left;
-  let percent = x / rect.width;
-  percent = Math.max(0, Math.min(1, percent));
-  progress.style.width = percent * 100 + "%";
-  video.currentTime = percent * video.duration;
+  const rect = progressBar.getBoundingClientRect()
+  const x = e.clientX - rect.left
+  let percent = x / rect.width
+  percent = Math.max(0, Math.min(1, percent))
+  progress.style.width = percent * 100 + "%"
+  video.currentTime = percent * video.duration
 }
 
 function scrubVolume(e) {
-  const rect = volumeBar.getBoundingClientRect();
-  const y = e.clientY - rect.top;
-  let percent = 1 - y / rect.height;
-  percent = Math.max(0, Math.min(1, percent));
-  video.volume = percent;
-  volumeLevel.style.height = percent * 100 + "%";
+  const rect = volumeBar.getBoundingClientRect()
+  let y = e.clientY - rect.top
+  y = Math.max(0, Math.min(rect.height, y))
+  const percent = 1 - y / rect.height
+  video.volume = percent
+  volumeLevel.style.height = percent * 100 + "%"
 }
 
 progressBar.addEventListener("pointerdown", e => {
-  isDraggingProgress = true;
-  scrubProgress(e);
-  progressBar.setPointerCapture(e.pointerId);
-});
+  isDraggingProgress = true
+  scrubProgress(e)
+  progressBar.setPointerCapture(e.pointerId)
+})
 
 volumeBar.addEventListener("pointerdown", e => {
-  isDraggingVolume = true;
-  scrubVolume(e);
-  volumeBar.setPointerCapture(e.pointerId);
-});
+  isDraggingVolume = true
+  scrubVolume(e)
+  volumeBar.setPointerCapture(e.pointerId)
+})
 
 window.addEventListener("pointermove", e => {
-  if (isDraggingProgress) scrubProgress(e);
-  if (isDraggingVolume) scrubVolume(e);
-});
+  if (isDraggingProgress) scrubProgress(e)
+  if (isDraggingVolume) scrubVolume(e)
+})
 
 window.addEventListener("pointerup", () => {
-  isDraggingProgress = false;
-  isDraggingVolume = false;
-});
+  isDraggingProgress = false
+  isDraggingVolume = false
+})
 
 title.addEventListener("click", () => {
   if (!showingJournal) {
-    video.pause();
-    videoContainer.style.display = "none";
-    journal.classList.add("show");
-    showingJournal = true;
+    // remember if video was playing
+    wasPlaying = !video.paused
+    video.pause()
+    videoContainer.style.display = "none"
+    journal.classList.add("show")
+    showingJournal = true
   } else {
-    journal.classList.remove("show");
-    videoContainer.style.display = "flex";
-    video.currentTime = 0;
-    video.play();
-    showingJournal = false;
+    journal.classList.remove("show")
+    videoContainer.style.display = "flex"
+    if (wasPlaying) video.play() // only resume if it was playing before
+    showingJournal = false
   }
-});
+})
 </script>
 
 </body>
