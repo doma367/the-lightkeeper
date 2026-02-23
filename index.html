@@ -84,6 +84,19 @@ h3 { margin: 0; padding: 20px 0; letter-spacing: 0.5em; font-size: clamp(0.6rem,
 .order-form input { background: #0f0d0c; border: 1px solid #2d2824; color: #c9ad8d; padding: 10px; border-radius: 4px; font-family: "Gallery", serif; letter-spacing: 0.1em; }
 .order-form input:focus { outline: none; border-color: #a7896a; }
 .order-form input::placeholder { color: #5a4f44; }
+  textarea {
+  width: 100%;
+  min-height: 60px;
+  margin-top: 8px;
+  padding: 6px;
+  border: 1px solid #a7896a;
+  border-radius: 4px;
+  background: #1a1614;
+  color: #c9ad8d;
+  font-family: "Gallery", serif;
+  font-size: 0.9rem;
+  resize: vertical;
+}
 
 /* Custom scrollbar for merch area if it gets too long */
 ::-webkit-scrollbar { width: 6px; }
@@ -481,59 +494,59 @@ h3 { margin: 0; padding: 20px 0; letter-spacing: 0.5em; font-size: clamp(0.6rem,
 </div>
 
 <!-- MERCH SECTION - add this where you want the merch to appear -->
-<div id="merchSection" style="max-width:800px;margin:40px auto;color:#c9ad8d;font-family:'Gallery', serif;">
-  <h2 style="letter-spacing:0.2em;margin-bottom:12px;">SUPPLIES</h2>
+<div id="merchSection">
+  <h2>SUPPLIES</h2>
 
-  <div class="merch-item" style="margin:18px 0;padding:12px;border:1px solid #2d2824;border-radius:6px;background:#0f0d0c;">
-    <h3 style="margin:0 0 8px 0;">ENTRY I TEE</h3>
-    <button class="merch-btn order-toggle" style="padding:8px 12px;background:#c9ad8d;border:1px solid #a7896a;border-radius:4px;cursor:pointer;">ORDER</button>
-    <form class="order-form" style="display:none;margin-top:12px;">
+  <div class="merch-item">
+    <h3>ENTRY I TEE</h3>
+    <button class="merch-btn order-toggle">ORDER</button>
+    <form class="order-form">
       <input type="text" name="item" value="Entry I Tee" hidden>
-      <input type="text" name="name" placeholder="Name" required style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px">
-      <input type="email" name="email" placeholder="Email" required style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px">
-      <textarea name="notes" placeholder="Notes (size, color, special requests)" rows="3" style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px"></textarea>
-      <button type="submit" class="merch-btn" style="padding:8px 12px;background:#c9ad8d;border:1px solid #a7896a;border-radius:4px;cursor:pointer;">SUBMIT</button>
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <textarea name="notes" placeholder="Notes"></textarea>
+      <button type="submit" class="merch-btn">SUBMIT</button>
     </form>
   </div>
 
-  <div class="merch-item" style="margin:18px 0;padding:12px;border:1px solid #2d2824;border-radius:6px;background:#0f0d0c;">
-    <h3 style="margin:0 0 8px 0;">THE LIGHTKEEPER HOODIE</h3>
-    <button class="merch-btn order-toggle" style="padding:8px 12px;background:#c9ad8d;border:1px solid #a7896a;border-radius:4px;cursor:pointer;">ORDER</button>
-    <form class="order-form" style="display:none;margin-top:12px;">
+  <div class="merch-item">
+    <h3>THE LIGHTKEEPER HOODIE</h3>
+    <button class="merch-btn order-toggle">ORDER</button>
+    <form class="order-form">
       <input type="text" name="item" value="The Lightkeeper Hoodie" hidden>
-      <input type="text" name="name" placeholder="Name" required style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px">
-      <input type="email" name="email" placeholder="Email" required style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px">
-      <textarea name="notes" placeholder="Notes (size, color, personalization)" rows="3" style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px"></textarea>
-      <button type="submit" class="merch-btn" style="padding:8px 12px;background:#c9ad8d;border:1px solid #a7896a;border-radius:4px;cursor:pointer;">SUBMIT</button>
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <textarea name="notes" placeholder="Notes"></textarea>
+      <button type="submit" class="merch-btn">SUBMIT</button>
     </form>
   </div>
 
-  <div class="merch-item" style="margin:18px 0;padding:12px;border:1px solid #2d2824;border-radius:6px;background:#0f0d0c;">
-    <h3 style="margin:0 0 8px 0;">HANDWRITTEN JOURNAL</h3>
-    <button class="merch-btn order-toggle" style="padding:8px 12px;background:#c9ad8d;border:1px solid #a7896a;border-radius:4px;cursor:pointer;">ORDER</button>
-    <form class="order-form" style="display:none;margin-top:12px;">
+  <div class="merch-item">
+    <h3>HANDWRITTEN JOURNAL</h3>
+    <button class="merch-btn order-toggle">ORDER</button>
+    <form class="order-form">
       <input type="text" name="item" value="Handwritten Journal" hidden>
-      <input type="text" name="name" placeholder="Name" required style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px">
-      <input type="email" name="email" placeholder="Email" required style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px">
-      <textarea name="notes" placeholder="Notes (dedication text, numbering request)" rows="3" style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px"></textarea>
-      <button type="submit" class="merch-btn" style="padding:8px 12px;background:#c9ad8d;border:1px solid #a7896a;border-radius:4px;cursor:pointer;">SUBMIT</button>
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <textarea name="notes" placeholder="Notes"></textarea>
+      <button type="submit" class="merch-btn">SUBMIT</button>
     </form>
   </div>
 
-  <div class="merch-item" style="margin:18px 0;padding:12px;border:1px solid #2d2824;border-radius:6px;background:#0f0d0c;">
-    <h3 style="margin:0 0 8px 0;">BRASS KEY NECKLACE</h3>
-    <button class="merch-btn order-toggle" style="padding:8px 12px;background:#c9ad8d;border:1px solid #a7896a;border-radius:4px;cursor:pointer;">ORDER</button>
-    <form class="order-form" style="display:none;margin-top:12px;">
+  <div class="merch-item">
+    <h3>BRASS KEY NECKLACE</h3>
+    <button class="merch-btn order-toggle">ORDER</button>
+    <form class="order-form">
       <input type="text" name="item" value="Brass Key Necklace" hidden>
-      <input type="text" name="name" placeholder="Name" required style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px">
-      <input type="email" name="email" placeholder="Email" required style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px">
-      <textarea name="notes" placeholder="Notes (engraving text, number preference)" rows="3" style="width:100%;padding:8px;margin:6px 0;background:#0f0d0c;color:#c9ad8d;border:1px solid #2d2824;border-radius:4px"></textarea>
-      <button type="submit" class="merch-btn" style="padding:8px 12px;background:#c9ad8d;border:1px solid #a7896a;border-radius:4px;cursor:pointer;">SUBMIT</button>
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <textarea name="notes" placeholder="Notes"></textarea>
+      <button type="submit" class="merch-btn">SUBMIT</button>
     </form>
   </div>
 </div>
 
-
+<script src="https://cdn.jsdelivr.net/npm/emailjs-com@3/dist/email.min.js"></script>
 <script>
 const video = document.getElementById("myVideo")
 const playBtn = document.getElementById("playPause")
@@ -656,141 +669,36 @@ merchToggle.addEventListener("click", () => {
     showingMerch = true
     merchToggle.style.opacity = "0.5"
 
-    (function(){
-  // safe scoped merch script
-  const merchRoot = document.getElementById('merchSection');
-  if (!merchRoot) return;
+emailjs.init("nByN00rGQagPZJwkL"); // put your EmailJS user ID here
 
-  // toggle only one form at a time
-  const toggles = merchRoot.querySelectorAll('.order-toggle');
-  toggles.forEach(btn => {
-    btn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      const itemEl = btn.closest('.merch-item');
-      const form = itemEl.querySelector('.order-form');
-      // close others
-      const forms = merchRoot.querySelectorAll('.order-form');
-      forms.forEach(f => { if (f !== form) f.style.display = 'none'; });
-      // toggle this one
-      form.style.display = (form.style.display === 'block') ? 'none' : 'block';
-    });
-  });
+document.querySelectorAll(".order-form").forEach(form => {
+  form.addEventListener("submit", e => {
+    e.preventDefault();
 
-  // email validation regex (simple and reliable)
-  const emailRe = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-  // handle form submit: validate email then open mail client with prefilled mailto to mardomokos7@gmail.com
-  const forms = merchRoot.querySelectorAll('.order-form');
-  forms.forEach(form => {
-    form.addEventListener('submit', (e) => {
-      e.preventDefault();
-
-      const item = form.querySelector('[name="item"]').value || 'Merch';
-      const name = (form.querySelector('[name="name"]').value || '').trim();
-      const email = (form.querySelector('[name="email"]').value || '').trim();
-      const notes = (form.querySelector('[name="notes"]').value || '').trim();
-
-      // remove previous error if any
-      const prevErr = form.querySelector('.email-error');
-      if (prevErr) prevErr.remove();
-
-      // validate email
-      if (!emailRe.test(email)) {
-        const err = document.createElement('div');
-        err.className = 'email-error';
-        err.textContent = 'please enter a valid email';
-        err.style.color = '#ffb3a7';
-        err.style.fontSize = '0.9rem';
-        err.style.marginTop = '6px';
-        form.appendChild(err);
-        return;
-      }
-
-      // compose mailto
-      const to = 'mardomokos7@gmail.com';
-      const subject = `Preorder: ${item}`;
-      const bodyLines = [
-        `item: ${item}`,
-        `name: ${name}`,
-        `email: ${email}`,
-        `notes:`,
-        notes
-      ];
-      const body = bodyLines.join('\n');
-
-      // open user's mail client with prefilled message
-      const mailto = `mailto:${encodeURIComponent(to)}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      window.location.href = mailto;
-
-      // optional: close form after opening mail client
-      // small timeout to allow mail client to open
-      setTimeout(() => {
-        form.style.display = 'none';
-      }, 300);
-    });
-  });
-
-  // close forms when clicking outside merch area
-  window.addEventListener('click', (e) => {
-    if (!merchRoot.contains(e.target)) {
-      const forms = merchRoot.querySelectorAll('.order-form');
-      forms.forEach(f => f.style.display = 'none');
+    const emailInput = form.querySelector('input[name="email"]')
+    const emailValue = emailInput.value.trim()
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(emailValue)) {
+      alert("Please enter a valid email")
+      return
     }
-  });
-})();
 
-  } else {
-    // Hide Merch
-    merchSection.classList.remove("show")
-    merchToggle.style.opacity = "1"
-    
-    setTimeout(() => {
-      merchSection.style.display = "none"
-      
-      // Restore previous state
-      if (stateBeforeMerch === 'journal') {
-        journal.classList.add("show")
-        showingJournal = true
-      } else {
-        videoContainer.style.display = "flex"
-        if (wasPlaying) video.play()
-        showingJournal = false
-      }
-    }, 500) // matches CSS transition time
-    
-    showingMerch = false
-  }
-})
+    const formData = {
+      item: form.querySelector('input[name="item"]').value,
+      name: form.querySelector('input[name="name"]').value,
+      email: emailValue,
+      notes: form.querySelector('textarea[name="notes"]').value
+    }
 
-// Merch Forms Logic
-orderToggles.forEach((btn, index) => {
-  btn.addEventListener("click", () => {
-    // Hide all other forms
-    orderForms.forEach((form, i) => {
-      if (i !== index) form.style.display = "none"
-    })
-    
-    // Toggle the clicked form
-    const targetForm = orderForms[index]
-    targetForm.style.display = (targetForm.style.display === "flex") ? "none" : "flex"
-  })
-})
-
-orderForms.forEach(form => {
-  form.addEventListener("submit", (e) => {
-    e.preventDefault()
-    
-    // Gather form data
-    const formData = new FormData(form)
-    const data = Object.fromEntries(formData.entries())
-    
-    // Log to console
-    console.log("--- NEW ORDER SUBMITTED ---")
-    console.table(data)
-    
-    // Reset and hide form
-    form.reset()
-    form.style.display = "none"
+    emailjs.send("service_ooxoj3o", "template_ps46uex", formData)
+      .then(() => {
+        alert("Order sent successfully!")
+        form.reset()
+      })
+      .catch(err => {
+        console.error(err)
+        alert("Failed to send. Try again later.")
+      })
   })
 })
 </script>
