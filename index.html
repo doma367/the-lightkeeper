@@ -4,13 +4,15 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>THE LIGHTKEEPER</title>
+
 <style>
-/* grain overlay */
 body::after {
   content: "";
   position: fixed;
-  top: -100%; left: -100%;
-  width: 300%; height: 300%;
+  top: -100%;
+  left: -100%;
+  width: 300%;
+  height: 300%;
   pointer-events: none;
   z-index: 9999;
   background-image: url("images/noise.png");
@@ -30,17 +32,17 @@ body::after {
   src: url("fonts/gallery.woff2") format("woff2");
 }
 
-* { 
-  box-sizing: border-box; 
+* {
+  box-sizing: border-box;
   -webkit-user-select: none;
   user-select: none;
 }
 
-html, body { 
-  height: 100%; 
-  margin: 0; 
-  background-color: #0f0d0c; 
-  overflow: hidden; 
+html, body {
+  height: 100%;
+  margin: 0;
+  background-color: #0f0d0c;
+  overflow: hidden;
 }
 
 body {
@@ -66,14 +68,14 @@ h1 {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  min-height: 0; 
+  min-height: 0;
   gap: 20px;
 }
 
 .video-frame {
   position: relative;
   max-width: 100%;
-  max-height: calc(100% - 120px); 
+  max-height: calc(100% - 120px);
   border-radius: 12px;
   overflow: hidden;
   background: #000;
@@ -82,8 +84,10 @@ h1 {
 .video-frame::after {
   content: "";
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   box-shadow: inset 0 0 80px rgba(0,0,0,0.8);
   border-radius: 12px;
@@ -157,14 +161,13 @@ button#playPause {
 
 h3 {
   margin: 0;
-  padding: 20px 0; 
+  padding: 20px 0;
   letter-spacing: 0.5em;
   font-size: clamp(0.6rem, 3vw, 0.8rem);
   opacity: 0.6;
   flex-shrink: 0;
 }
 
-/* hidden journal */
 #journal {
   display: none;
   opacity: 0;
@@ -175,25 +178,29 @@ h3 {
   line-height: 1.5em;
   transition: opacity 1s ease-in-out;
 }
+
 #journal.show {
   display: block;
   opacity: 1;
 }
+
 #journal h2 {
   margin-top: 0;
   font-size: 1.5rem;
   letter-spacing: 0.2em;
 }
+
 #journal p {
   margin: 0.5em 0;
 }
 </style>
 </head>
+
 <body>
 
-<h1>THE LIGHTKEEPER</h1>
+<h1 id="title">THE LIGHTKEEPER</h1>
 
-<div class="video-container">
+<div class="video-container" id="videoContainer">
   <div class="video-frame">
     <video id="myVideo" src="videos/teaser.mp4" loop playsinline></video>
   </div>
@@ -211,18 +218,19 @@ h3 {
 
 <h3>FIRST WAVES</h3>
 
-<!-- hidden Lightkeeper journal -->
 <div id="journal">
   <h2>Journal – Entry I</h2>
   <p><strong>March 3, 1953</strong></p>
-  <p>the morning was clear.<br>
+  <p>
+  the morning was clear.<br>
   waves crashed steadily into the rocks.<br>
   checked the lamp and the lenses, everything was in order.<br>
   some gulls circled overhead for some time, then moved on.<br>
-  they amaze me, their freedom. <br>
+  they amaze me, their freedom.<br>
   kept the log, inspected the keep, cleaned the rails a bit.<br>
   no ships today, nothing unusual.<br>
-  the light holds steady, as it always does.</p>
+  the light holds steady, as it always does.
+  </p>
 </div>
 
 <script>
@@ -232,8 +240,14 @@ const progress = document.getElementById("progress");
 const progressBar = document.getElementById("progressBar");
 const volumeBar = document.getElementById("volumeBar");
 const volumeLevel = document.getElementById("volumeLevel");
+const title = document.getElementById("title");
+const journal = document.getElementById("journal");
+const videoContainer = document.getElementById("videoContainer");
 
-// Play/Pause Logic
+let showingJournal = false;
+let isDraggingProgress = false;
+let isDraggingVolume = false;
+
 playBtn.addEventListener("click", () => {
   if (video.paused) {
     video.play();
@@ -244,68 +258,65 @@ playBtn.addEventListener("click", () => {
   }
 });
 
-// Update progress bar as video plays
 video.addEventListener("timeupdate", () => {
-  if (!isDraggingProgress) {
+  if (!isDraggingProgress && video.duration) {
     const percent = (video.currentTime / video.duration) * 100;
     progress.style.width = percent + "%";
   }
 });
-
-// DRAGGING LOGIC
-let isDraggingProgress = false;
-let isDraggingVolume = false;
 
 function scrubProgress(e) {
   const rect = progressBar.getBoundingClientRect();
   const x = e.clientX - rect.left;
   let percent = x / rect.width;
   percent = Math.max(0, Math.min(1, percent));
-  progress.style.width = (percent * 100) + "%";
+  progress.style.width = percent * 100 + "%";
   video.currentTime = percent * video.duration;
 }
 
 function scrubVolume(e) {
   const rect = volumeBar.getBoundingClientRect();
   const y = e.clientY - rect.top;
-  let percent = 1 - (y / rect.height);
+  let percent = 1 - y / rect.height;
   percent = Math.max(0, Math.min(1, percent));
   video.volume = percent;
-  volumeLevel.style.height = (percent * 100) + "%";
+  volumeLevel.style.height = percent * 100 + "%";
 }
 
-// Pointer Events
-progressBar.addEventListener("pointerdown", (e) => {
+progressBar.addEventListener("pointerdown", e => {
   isDraggingProgress = true;
   scrubProgress(e);
   progressBar.setPointerCapture(e.pointerId);
 });
 
-volumeBar.addEventListener("pointerdown", (e) => {
+volumeBar.addEventListener("pointerdown", e => {
   isDraggingVolume = true;
   scrubVolume(e);
   volumeBar.setPointerCapture(e.pointerId);
 });
 
-window.addEventListener("pointermove", (e) => {
+window.addEventListener("pointermove", e => {
   if (isDraggingProgress) scrubProgress(e);
   if (isDraggingVolume) scrubVolume(e);
 });
 
-window.addEventListener("pointerup", (e) => {
+window.addEventListener("pointerup", () => {
   isDraggingProgress = false;
   isDraggingVolume = false;
 });
 
-// Lightkeeper Journal Reveal
-const title = document.querySelector("h1");
-const journal = document.getElementById("journal");
-let unlocked = false;
-
 title.addEventListener("click", () => {
-  if (!unlocked) {
+  if (!showingJournal) {
+    video.pause();
+    videoContainer.style.display = "none";
     journal.classList.add("show");
-    unlocked = true;
+    showingJournal = true;
+  } else {
+    journal.classList.remove("show");
+    videoContainer.style.display = "flex";
+    video.currentTime = 0;
+    video.play();
+    showingJournal = false;
   }
 });
 </script>
