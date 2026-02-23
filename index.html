@@ -38,7 +38,9 @@ html, body { height: 100%; margin: 0; background-color: #0f0d0c; overflow: hidde
 
 body { display: flex; flex-direction: column; font-family: "Gallery", serif; color: #c9ad8d; text-align: center; padding: 0 10px; }
 
-h1 { margin: 2vh 0; font-size: clamp(1.2rem, 8vw, 4rem); letter-spacing: 0.3em; font-weight: normal; cursor: pointer; }
+.header-container { display: flex; justify-content: center; align-items: center; gap: 30px; margin: 2vh 0; }
+
+h1 { margin: 0; font-size: clamp(1.2rem, 8vw, 4rem); letter-spacing: 0.3em; font-weight: normal; cursor: pointer; }
 
 .video-container { flex: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; min-height: 0; gap: 20px; }
 
@@ -50,7 +52,10 @@ video { max-width: 100%; max-height: 100%; display: block; object-fit: contain; 
 
 .controls { display: flex; align-items: center; justify-content: center; gap: clamp(10px,4vw,25px); background: #1a1614; padding: 10px 20px; border: 1px solid #2d2824; border-radius: 6px; width: fit-content; max-width: 95vw; }
 
-button#playPause, .journal-btn { width: 36px; height: 36px; background: #c9ad8d; border: 1px solid #a7896a; border-radius: 4px; cursor: pointer; transition: opacity 0.2s; flex-shrink: 0; }
+button#playPause, .journal-btn, .merch-btn { height: 36px; background: #c9ad8d; border: 1px solid #a7896a; border-radius: 4px; cursor: pointer; transition: opacity 0.2s; flex-shrink: 0; font-family: "Gallery", serif; font-size: 0.9rem; font-weight: bold; color: #0f0d0c; }
+button#playPause { width: 36px; }
+.journal-btn { width: 36px; }
+.merch-btn { padding: 0 15px; letter-spacing: 0.1em; }
 
 #progressBar { width: clamp(100px,40vw,300px); height: 12px; background: #2d2824; cursor: pointer; touch-action: none; display: flex; align-items: center; }
 
@@ -62,22 +67,38 @@ button#playPause, .journal-btn { width: 36px; height: 36px; background: #c9ad8d;
 
 h3 { margin: 0; padding: 20px 0; letter-spacing: 0.5em; font-size: clamp(0.6rem,3vw,0.8rem); opacity: 0.6; flex-shrink: 0; }
 
-#journal { display: none; opacity: 0; max-width: 800px; margin: 20px auto; padding: 20px; text-align: left; line-height: 1.5em; transition: opacity 1s ease-in-out; position: relative; }
+#journal, #merchSection { display: none; opacity: 0; max-width: 800px; margin: 20px auto; padding: 20px; text-align: left; line-height: 1.5em; transition: opacity 1s ease-in-out; position: relative; overflow-y: auto; max-height: 70vh; }
 
-#journal.show { display: block; opacity: 1; }
+#journal.show, #merchSection.show { display: block; opacity: 1; }
 
-#journal h2 { margin-top: 0; font-size: 1.5rem; letter-spacing: 0.2em; }
+#journal h2, #merchSection h2 { margin-top: 0; font-size: 1.5rem; letter-spacing: 0.2em; text-align: center; padding-bottom: 10px;}
 
 #journal p { margin: 0.5em 0; }
 
 .journal-controls { display: flex; justify-content: center; gap: 10px; margin-top: 15px; }
+
+/* Merch Section Styles */
+.merch-item { background: #1a1614; border: 1px solid #2d2824; border-radius: 6px; padding: 20px; margin-bottom: 20px; text-align: center; }
+.merch-item h3 { padding: 0 0 15px 0; opacity: 1; letter-spacing: 0.2em; font-size: 1.1rem; }
+.order-form { display: none; flex-direction: column; gap: 12px; margin-top: 20px; max-width: 400px; margin-left: auto; margin-right: auto; }
+.order-form input { background: #0f0d0c; border: 1px solid #2d2824; color: #c9ad8d; padding: 10px; border-radius: 4px; font-family: "Gallery", serif; letter-spacing: 0.1em; }
+.order-form input:focus { outline: none; border-color: #a7896a; }
+.order-form input::placeholder { color: #5a4f44; }
+
+/* Custom scrollbar for merch area if it gets too long */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #0f0d0c; }
+::-webkit-scrollbar-thumb { background: #2d2824; border-radius: 3px; }
 
 </style>
 </head>
 
 <body>
 
-<h1 id="title">THE LIGHTKEEPER</h1>
+<div class="header-container">
+  <h1 id="title">THE LIGHTKEEPER</h1>
+  <button id="merchToggle" class="merch-btn">MERCH</button>
+</div>
 
 <div class="video-container" id="videoContainer">
   <div class="video-frame">
@@ -89,9 +110,8 @@ h3 { margin: 0; padding: 20px 0; letter-spacing: 0.5em; font-size: clamp(0.6rem,
     <div id="progressBar"><div id="progress"></div></div>
     <div id="volumeBar"><div id="volumeLevel"></div></div>
   </div>
+  <h3>FIRST WAVES</h3>
 </div>
-
-<h3>FIRST WAVES</h3>
 
 <div id="journal">
   <div class="entry" data-index="0">
@@ -460,6 +480,58 @@ h3 { margin: 0; padding: 20px 0; letter-spacing: 0.5em; font-size: clamp(0.6rem,
   </div>
 </div>
 
+<div id="merchSection">
+  <h2>SUPPLIES</h2>
+  
+  <div class="merch-item">
+    <h3>THE LIGHTKEEPER T-SHIRT</h3>
+    <button class="merch-btn order-toggle">ORDER</button>
+    <form class="order-form">
+      <input type="text" name="item" value="T-Shirt" hidden>
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="tel" name="phone" placeholder="Phone" required>
+      <button type="submit" class="merch-btn">SUBMIT</button>
+    </form>
+  </div>
+
+  <div class="merch-item">
+    <h3>THE LIGHTKEEPER POSTER</h3>
+    <button class="merch-btn order-toggle">ORDER</button>
+    <form class="order-form">
+      <input type="text" name="item" value="Poster" hidden>
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="tel" name="phone" placeholder="Phone" required>
+      <button type="submit" class="merch-btn">SUBMIT</button>
+    </form>
+  </div>
+
+  <div class="merch-item">
+    <h3>THE LIGHTKEEPER HAT</h3>
+    <button class="merch-btn order-toggle">ORDER</button>
+    <form class="order-form">
+      <input type="text" name="item" value="Hat" hidden>
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="tel" name="phone" placeholder="Phone" required>
+      <button type="submit" class="merch-btn">SUBMIT</button>
+    </form>
+  </div>
+
+  <div class="merch-item">
+    <h3>THE LIGHTKEEPER MUG</h3>
+    <button class="merch-btn order-toggle">ORDER</button>
+    <form class="order-form">
+      <input type="text" name="item" value="Mug" hidden>
+      <input type="text" name="name" placeholder="Name" required>
+      <input type="email" name="email" placeholder="Email" required>
+      <input type="tel" name="phone" placeholder="Phone" required>
+      <button type="submit" class="merch-btn">SUBMIT</button>
+    </form>
+  </div>
+</div>
+
 <script>
 const video = document.getElementById("myVideo")
 const playBtn = document.getElementById("playPause")
@@ -470,8 +542,14 @@ const volumeLevel = document.getElementById("volumeLevel")
 const title = document.getElementById("title")
 const journal = document.getElementById("journal")
 const videoContainer = document.getElementById("videoContainer")
+const merchToggle = document.getElementById("merchToggle")
+const merchSection = document.getElementById("merchSection")
+const orderToggles = document.querySelectorAll(".order-toggle")
+const orderForms = document.querySelectorAll(".order-form")
 
 let showingJournal = false
+let showingMerch = false
+let stateBeforeMerch = 'video' // Tracks what to return to after closing merch
 let isDraggingProgress = false
 let isDraggingVolume = false
 let wasPlaying = false
@@ -480,6 +558,7 @@ const entries = document.querySelectorAll("#journal .entry")
 const prevBtn = document.getElementById("prevEntry")
 const nextBtn = document.getElementById("nextEntry")
 
+// Video Controls
 playBtn.addEventListener("click", () => {
   if (video.paused) { video.play(); playBtn.style.opacity = "0.5" }
   else { video.pause(); playBtn.style.opacity = "1" }
@@ -516,6 +595,7 @@ volumeBar.addEventListener("pointerdown", e => { isDraggingVolume=true; scrubVol
 window.addEventListener("pointermove", e => { if (isDraggingProgress) scrubProgress(e); if (isDraggingVolume) scrubVolume(e) })
 window.addEventListener("pointerup", () => { isDraggingProgress=false; isDraggingVolume=false })
 
+// Journal Logic
 function showEntry(index) {
   entries.forEach((e,i)=>e.style.display=(i===index?"block":"none"))
 }
@@ -531,6 +611,13 @@ nextBtn.addEventListener("click", () => {
 })
 
 title.addEventListener("click", () => {
+  // If merch is open, close it first before handling title logic
+  if (showingMerch) {
+    merchSection.classList.remove("show")
+    setTimeout(() => { merchSection.style.display = "none" }, 500)
+    showingMerch = false
+  }
+
   if (!showingJournal) {
     wasPlaying = !video.paused
     video.pause()
@@ -543,6 +630,83 @@ title.addEventListener("click", () => {
     if (wasPlaying) video.play()
     showingJournal = false
   }
+})
+
+// Merch Logic
+merchToggle.addEventListener("click", () => {
+  if (!showingMerch) {
+    // Save current state
+    stateBeforeMerch = showingJournal ? 'journal' : 'video'
+    
+    // Hide Video & Journal
+    if (!showingJournal) {
+      wasPlaying = !video.paused
+      video.pause()
+      videoContainer.style.display = "none"
+    } else {
+      journal.classList.remove("show")
+    }
+
+    // Show Merch
+    merchSection.style.display = "block"
+    // Small timeout to allow display:block to apply before adding opacity class
+    setTimeout(() => { merchSection.classList.add("show") }, 10)
+    showingMerch = true
+    merchToggle.style.opacity = "0.5"
+
+  } else {
+    // Hide Merch
+    merchSection.classList.remove("show")
+    merchToggle.style.opacity = "1"
+    
+    setTimeout(() => {
+      merchSection.style.display = "none"
+      
+      // Restore previous state
+      if (stateBeforeMerch === 'journal') {
+        journal.classList.add("show")
+        showingJournal = true
+      } else {
+        videoContainer.style.display = "flex"
+        if (wasPlaying) video.play()
+        showingJournal = false
+      }
+    }, 500) // matches CSS transition time
+    
+    showingMerch = false
+  }
+})
+
+// Merch Forms Logic
+orderToggles.forEach((btn, index) => {
+  btn.addEventListener("click", () => {
+    // Hide all other forms
+    orderForms.forEach((form, i) => {
+      if (i !== index) form.style.display = "none"
+    })
+    
+    // Toggle the clicked form
+    const targetForm = orderForms[index]
+    targetForm.style.display = (targetForm.style.display === "flex") ? "none" : "flex"
+  })
+})
+
+orderForms.forEach(form => {
+  form.addEventListener("submit", (e) => {
+    e.preventDefault()
+    
+    // Gather form data
+    const formData = new FormData(form)
+    const data = Object.fromEntries(formData.entries())
+    
+    // Log to console
+    console.log("--- NEW ORDER SUBMITTED ---")
+    console.table(data)
+    
+    // Reset and hide form
+    form.reset()
+    form.style.display = "none"
+  })
 })
 </script>
 
