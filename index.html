@@ -562,6 +562,17 @@ const merchSection = document.getElementById("merchSection")
 const orderToggles = document.querySelectorAll(".order-toggle")
 const orderForms = document.querySelectorAll(".order-form")
 
+  orderToggles.forEach((btn, i) => {
+  btn.addEventListener("click", () => {
+    const form = orderForms[i]
+    if (form.style.display === "flex") {
+      form.style.display = "none"
+    } else {
+      form.style.display = "flex"
+    }
+  })
+})
+
 let showingJournal = false
 let showingMerch = false
 let stateBeforeMerch = 'video' // Tracks what to return to after closing merch
