@@ -19,14 +19,6 @@ body::after {
     animation: grainMove 1s steps(4) infinite;
 }
 
-/* Hide volume slider on touch devices since OS hardware buttons control volume */
-@media (pointer: coarse) {
-  #volumeBar {
-    display: none;
-  }
-}
-
-
 @keyframes grainMove {
     0% { transform: translate(0,0); }
     25% { transform: translate(-5%,3%); }
@@ -293,6 +285,15 @@ function scrubVolume(e) {
     video.volume = percent
     volumeLevel.style.height = percent*100 + "%"
 }
+
+// Check if the user is on a mobile device or touch screen
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window);
+
+if (isMobile) {
+  volumeBar.style.display = "none";
+}
+
+
 progressBar.addEventListener("pointerdown", e => {
     isDraggingProgress=true
     scrubProgress(e)
