@@ -18,6 +18,15 @@ body::after {
     opacity: 0.1;
     animation: grainMove 1s steps(4) infinite;
 }
+
+/* Hide volume slider on touch devices since OS hardware buttons control volume */
+@media (pointer: coarse) {
+  #volumeBar {
+    display: none;
+  }
+}
+
+
 @keyframes grainMove {
     0% { transform: translate(0,0); }
     25% { transform: translate(-5%,3%); }
