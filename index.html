@@ -5,26 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>THE LIGHTKEEPER</title>
 <style>
-body::after {
-    content: "";
-    position: fixed;
-    top: -100%;
-    left: -100%;
-    width: 300%;
-    height: 300%;
-    pointer-events: none;
-    z-index: 9999;
-    background-image: url("images/noise.png");
-    opacity: 0.3;
-    animation: grainMove 1s steps(4) infinite;
-}
 
-@keyframes grainMove {
-    0% { transform: translate(0,0); }
-    25% { transform: translate(-5%,3%); }
-    50% { transform: translate(4%,-6%); }
-    100% { transform: translate(0,0); }
-}
 @font-face {
     font-family: "Gallery";
     src: url("fonts/gallery.woff2") format("woff2");
@@ -337,6 +318,58 @@ title.addEventListener("click", () => {
         showingJournal = false
     }
 })
+
+// --- DYNAMIC FILM GRAIN ---
+function createGrain() {
+    // 1. Create a tiny off-screen canvas
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
+    canvas.width = 128; // Small size for performance
+    canvas.height = 128;
+
+    // 2. Generate random monochrome noise
+    const imgData = ctx.createImageData(canvas.width, canvas.height);
+    for (let i = 0; i < imgData.data.length; i += 4) {
+        // Random value between 0 and 255 for grayscale
+        const color = Math.floor(Math.random() * 255); 
+        imgData.data[i] = color;       // Red
+        imgData.data[i+1] = color;     // Green
+        imgData.data[i+2] = color;     // Blue
+        imgData.data[i+3] = 255;       // Alpha
+    }
+    ctx.putImageData(imgData, 0, 0);
+
+    // 3. Create a perfectly sized overlay element
+    const grain = document.createElement('div');
+    grain.style.position = 'fixed';
+    grain.style.top = '0';
+    grain.style.left = '0';
+    grain.style.width = '100vw';
+    grain.style.height = '100vh';
+    grain.style.pointerEvents = 'none';
+    grain.style.zIndex = '9999';
+    // Adjust opacity here! (0.05 to 0.15 usually looks best for raw canvas noise)
+    grain.style.opacity = '0.08'; 
+    grain.style.backgroundImage = `url(${canvas.toDataURL()})`;
+    document.body.appendChild(grain);
+
+    // 4. Randomly shift the background position
+    function animateGrain() {
+        const x = Math.floor(Math.random() * 128);
+        const y = Math.floor(Math.random() * 128);
+        grain.style.backgroundPosition = `${x}px ${y}px`;
+        
+        // setTimeout limits the frame rate to ~20fps so it looks like real film
+        setTimeout(() => requestAnimationFrame(animateGrain), 50); 
+    }
+    
+    animateGrain();
+}
+
+// Initialize the grain
+createGrain();
+
+
 </script>
 </body>
 </html>
