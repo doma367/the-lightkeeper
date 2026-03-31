@@ -174,7 +174,7 @@ h3 {
         <div id="volumeBar"><div id="volumeLevel"></div></div>
     </div>
 </div>
-<h3>FIRST WAVES</h3>
+<h3>STORMED SHORE</h3>
 <div id="journal">
     <div class="entry" data-index="0">
         <h2>Journal – Entry I</h2>
@@ -214,7 +214,7 @@ h3 {
     <div class="entry" data-index="7" style="display:none">
         <h2>Journal – Entry VIII</h2>
         <p><strong>February 5, 1953</strong></p>
-        <p> saw an old shipwreck on the horizon today. <br> can’t stop thinking about it. <br> lens caught its reflection faintly. <br> oil lasts, lamp steady. <br> still, the sight lingers. </p>
+        <p> saw an old shipwreck on the horizon today. <br> can't stop thinking about it. <br> lens caught its reflection faintly. <br> oil lasts, lamp steady. <br> still, the sight lingers. </p>
     </div>
     <div class="entry" data-index="8" style="display:none">
         <h2>Journal – Entry IX</h2>
@@ -350,19 +350,7 @@ function createGrain() {
     canvas.width = 128; // Small size for performance
     canvas.height = 128;
 
-    // 2. Generate random monochrome noise
-    const imgData = ctx.createImageData(canvas.width, canvas.height);
-    for (let i = 0; i < imgData.data.length; i += 4) {
-        // Random value between 0 and 255 for grayscale
-        const color = Math.floor(Math.random() * 255); 
-        imgData.data[i] = color;       // Red
-        imgData.data[i+1] = color;     // Green
-        imgData.data[i+2] = color;     // Blue
-        imgData.data[i+3] = 255;       // Alpha
-    }
-    ctx.putImageData(imgData, 0, 0);
-
-    // 3. Create a perfectly sized overlay element
+    // 2. Create a perfectly sized overlay element
     const grain = document.createElement('div');
     grain.style.position = 'fixed';
     grain.style.top = '0';
@@ -372,20 +360,27 @@ function createGrain() {
     grain.style.pointerEvents = 'none';
     grain.style.zIndex = '9999';
     // Adjust opacity here! (0.05 to 0.15 usually looks best for raw canvas noise)
-    grain.style.opacity = '0.08'; 
-    grain.style.backgroundImage = `url(${canvas.toDataURL()})`;
+    grain.style.opacity = '0.08';
     document.body.appendChild(grain);
 
-    // 4. Randomly shift the background position
+    // 3. Regenerate a completely new noise texture every frame
     function animateGrain() {
-        const x = Math.floor(Math.random() * 128);
-        const y = Math.floor(Math.random() * 128);
-        grain.style.backgroundPosition = `${x}px ${y}px`;
-        
+        const imgData = ctx.createImageData(canvas.width, canvas.height);
+        for (let i = 0; i < imgData.data.length; i += 4) {
+            // Random value between 0 and 255 for grayscale
+            const color = Math.floor(Math.random() * 255);
+            imgData.data[i]   = color; // Red
+            imgData.data[i+1] = color; // Green
+            imgData.data[i+2] = color; // Blue
+            imgData.data[i+3] = 255;   // Alpha
+        }
+        ctx.putImageData(imgData, 0, 0);
+        grain.style.backgroundImage = `url(${canvas.toDataURL()})`;
+
         // setTimeout limits the frame rate to ~20fps so it looks like real film
-        setTimeout(() => requestAnimationFrame(animateGrain), 50); 
+        setTimeout(() => requestAnimationFrame(animateGrain), 50);
     }
-    
+
     animateGrain();
 }
 
