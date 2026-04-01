@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="en">
 <head>
 <meta charset="UTF-8">
@@ -7,162 +8,256 @@
 <style>
 
 @font-face {
-    font-family: "Gallery";
-    src: url("fonts/gallery.woff2") format("woff2");
+font-family: “Gallery”;
+src: url(“fonts/gallery.woff2”) format(“woff2”);
 }
-* {
-    box-sizing: border-box;
-    -webkit-user-select: none;
-    user-select: none;
-}
-html, body {
-    height: 100%;
-    margin: 0;
-    background-color: #0f0d0c;
-    overflow: hidden;
-}
-body {
-    display: flex;
-    flex-direction: column;
-    font-family: "Gallery", serif;
-    color: #c9ad8d;
-    text-align: center;
-    padding: 0 10px;
-}
-h1 {
-    margin: 2vh 0;
-    font-size: clamp(1.2rem, 8vw, 4rem);
-    letter-spacing: 0.3em;
-    font-weight: normal;
-    cursor: pointer;
-}
-.video-container {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    min-height: 0;
-    gap: 20px;
-}
-.video-frame {
-    position: relative;
-    max-width: 100%;
-    max-height: calc(100% - 120px);
-    border-radius: 12px;
-    overflow: hidden;
-    background: #000;
-}
-.video-frame::after {
-    content: "";
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    pointer-events: none;
-    box-shadow: inset 0 0 80px rgba(0,0,0,0.8);
-    border-radius: 12px;
-}
-video {
-    max-width: 100%;
-    max-height: 100%;
-    display: block;
-    object-fit: contain;
-}
-.controls {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: clamp(10px,4vw,25px);
-    background: #1a1614;
-    padding: 10px 20px;
-    border: 1px solid #2d2824;
-    border-radius: 6px;
-    width: fit-content;
-    max-width: 95vw;
-}
-button#playPause, .journal-btn {
-    width: 36px;
-    height: 36px;
-    background: #c9ad8d;
-    border: 1px solid #a7896a;
-    border-radius: 4px;
-    cursor: pointer;
-    transition: opacity 0.2s;
-    flex-shrink: 0;
-}
-#progressBar {
-    width: clamp(100px,40vw,300px);
-    height: 12px;
-    background: #2d2824;
-    cursor: pointer;
-    touch-action: none;
-    display: flex;
-    align-items: center;
-}
-#progress {
-    height: 4px;
-    width: 0%;
-    background: #c9ad8d;
-    pointer-events: none;
-}
-#volumeBar {
-    width: 16px;
-    height: 40px;
-    background: #2d2824;
-    display: flex;
-    flex-direction: column-reverse;
-    cursor: pointer;
-    touch-action: none;
-    padding: 2px;
-}
-#volumeLevel {
-    width: 100%;
-    height: 80%;
-    background: #8a6f4d;
-    pointer-events: none;
-}
-h3 {
-    margin: 0;
-    padding: 20px 0;
-    letter-spacing: 0.5em;
-    font-size: clamp(0.6rem,3vw,0.8rem);
-    opacity: 0.6;
-    flex-shrink: 0;
-}
+
+- {
+  box-sizing: border-box;
+  -webkit-user-select: none;
+  user-select: none;
+  }
+  html, body {
+  height: 100%;
+  margin: 0;
+  background-color: #0f0d0c;
+  overflow: hidden;
+  }
+  body {
+  display: flex;
+  flex-direction: column;
+  font-family: “Gallery”, serif;
+  color: #c9ad8d;
+  text-align: center;
+  padding: 0 10px;
+  }
+  h1 {
+  margin: 2vh 0;
+  font-size: clamp(1.2rem, 8vw, 4rem);
+  letter-spacing: 0.3em;
+  font-weight: normal;
+  cursor: pointer;
+  }
+  .video-container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  min-height: 0;
+  gap: 20px;
+  }
+  .video-frame {
+  position: relative;
+  max-width: 100%;
+  max-height: calc(100% - 120px);
+  border-radius: 12px;
+  overflow: hidden;
+  background: #000;
+  }
+  .video-frame::after {
+  content: “”;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  box-shadow: inset 0 0 80px rgba(0,0,0,0.8);
+  border-radius: 12px;
+  }
+  video {
+  max-width: 100%;
+  max-height: 100%;
+  display: block;
+  object-fit: contain;
+  }
+  .controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(10px,4vw,25px);
+  background: #1a1614;
+  padding: 10px 20px;
+  border: 1px solid #2d2824;
+  border-radius: 6px;
+  width: fit-content;
+  max-width: 95vw;
+  }
+  button#playPause {
+  width: 36px;
+  height: 36px;
+  background: #c9ad8d;
+  border: 1px solid #a7896a;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+  }
+  #progressBar {
+  width: clamp(100px,40vw,300px);
+  height: 12px;
+  background: #2d2824;
+  cursor: pointer;
+  touch-action: none;
+  display: flex;
+  align-items: center;
+  }
+  #progress {
+  height: 4px;
+  width: 0%;
+  background: #c9ad8d;
+  pointer-events: none;
+  }
+  #volumeBar {
+  width: 16px;
+  height: 40px;
+  background: #2d2824;
+  display: flex;
+  flex-direction: column-reverse;
+  cursor: pointer;
+  touch-action: none;
+  padding: 2px;
+  }
+  #volumeLevel {
+  width: 100%;
+  height: 80%;
+  background: #8a6f4d;
+  pointer-events: none;
+  }
+  h3 {
+  margin: 0;
+  padding: 20px 0;
+  letter-spacing: 0.5em;
+  font-size: clamp(0.6rem,3vw,0.8rem);
+  opacity: 0.6;
+  flex-shrink: 0;
+  }
+
+/* Journal: fills remaining space, arrows pinned to bottom */
 #journal {
-    display: none;
-    opacity: 0;
-    max-width: 800px;
-    margin: 20px auto;
-    padding: 20px;
-    text-align: left;
-    line-height: 1.5em;
-    transition: opacity 1s ease-in-out;
-    position: relative;
+display: none;
+opacity: 0;
+flex: 1;
+max-width: 800px;
+margin: 0 auto;
+padding: 20px 20px 0;
+text-align: left;
+line-height: 1.5em;
+transition: opacity 1s ease-in-out;
+position: relative;
+width: 100%;
+overflow: hidden;
 }
 #journal.show {
-    display: block;
-    opacity: 1;
+display: flex;
+flex-direction: column;
+opacity: 1;
 }
 #journal h2 {
-    margin-top: 0;
-    font-size: 1.5rem;
-    letter-spacing: 0.2em;
+margin-top: 0;
+font-size: 1.5rem;
+letter-spacing: 0.2em;
 }
 #journal p {
-    margin: 0.5em 0;
+margin: 0.5em 0;
 }
+
+/* Entry scrollable area */
+#journal-entries {
+flex: 1;
+overflow-y: auto;
+padding-bottom: 10px;
+}
+#journal-entries::-webkit-scrollbar { display: none; }
+#journal-entries { scrollbar-width: none; }
+
+/* Arrows pinned to bottom, styled to match site */
 .journal-controls {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-top: 15px;
+display: flex;
+justify-content: center;
+gap: 28px;
+padding: 16px 0 20px;
+flex-shrink: 0;
+border-top: 1px solid #2d2824;
+}
+.journal-btn {
+width: 44px;
+height: 44px;
+background: transparent;
+border: 1px solid #5a4a38;
+border-radius: 4px;
+cursor: pointer;
+color: #c9ad8d;
+font-family: “Gallery”, serif;
+font-size: 1.1rem;
+letter-spacing: 0.1em;
+display: flex;
+align-items: center;
+justify-content: center;
+transition: background 0.2s, border-color 0.2s, opacity 0.2s;
+position: relative;
+overflow: hidden;
+}
+.journal-btn::before {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: #c9ad8d;
+opacity: 0;
+transition: opacity 0.2s;
+}
+.journal-btn:hover::before { opacity: 0.08; }
+.journal-btn:hover { border-color: #c9ad8d; }
+.journal-btn svg {
+position: relative;
+z-index: 1;
+width: 16px;
+height: 16px;
+stroke: #c9ad8d;
+fill: none;
+stroke-width: 1.5;
+stroke-linecap: round;
+stroke-linejoin: round;
+}
+
+/* Film grain overlay — CSS animation, no JS flicker */
+#grain {
+position: fixed;
+top: -50%;
+left: -50%;
+width: 200%;
+height: 200%;
+pointer-events: none;
+z-index: 9999;
+opacity: 0.045;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’/%3E%3C/svg%3E”);
+background-size: 256px 256px;
+animation: grainShift 0.12s steps(1) infinite;
+will-change: transform;
+}
+@keyframes grainShift {
+0%   { transform: translate(0, 0); }
+10%  { transform: translate(-3%, -4%); }
+20%  { transform: translate(4%, 2%); }
+30%  { transform: translate(-2%, 5%); }
+40%  { transform: translate(5%, -3%); }
+50%  { transform: translate(-4%, 1%); }
+60%  { transform: translate(2%, -5%); }
+70%  { transform: translate(-5%, 3%); }
+80%  { transform: translate(3%, 4%); }
+90%  { transform: translate(-1%, -2%); }
+100% { transform: translate(4%, -4%); }
 }
 </style>
+
 </head>
 <body>
+
+<!-- CSS-based grain — smooth on all devices -->
+
+<div id="grain"></div>
+
 <h1 id="title">THE LIGHTKEEPER</h1>
 <div class="video-container" id="videoContainer">
     <div class="video-frame">
@@ -175,72 +270,84 @@ h3 {
     </div>
 </div>
 <h3>STORMED SHORE</h3>
+
 <div id="journal">
-    <div class="entry" data-index="0">
-        <h2>Journal – Entry I</h2>
-        <p><strong>January 3, 1953</strong></p>
-        <p> i arrived at the keep today. <br> the wind was very sharp, but the light was steady, as it always is...<br> i looked around the keep, cleaned the lantern, checked the logs. <br> all in order. <br> nights are quiet, because all the gulls settle.<br> i am alone with the sea and the sound of waves crashing on the rocks.<br> first night here, all is well. </p>
+    <div id="journal-entries">
+        <div class="entry" data-index="0">
+            <h2>Journal – Entry I</h2>
+            <p><strong>January 3, 1953</strong></p>
+            <p> i arrived at the keep today. <br> the wind was very sharp, but the light was steady, as it always is...<br> i looked around the keep, cleaned the lantern, checked the logs. <br> all in order. <br> nights are quiet, because all the gulls settle.<br> i am alone with the sea and the sound of waves crashing on the rocks.<br> first night here, all is well. </p>
+        </div>
+        <div class="entry" data-index="1" style="display:none">
+            <h2>Journal – Entry II</h2>
+            <p><strong>January 7, 1953</strong></p>
+            <p> the fog rolled in thick this morning. <br> visibility low. the light will be of use. <br> spent hours on maintenance. i tightened the railings and polished the lens. <br> saw a lone gull circling near the cliffs, more persistent than usual. <br> they are noisy today, but harmless. <br> the lamp shines through the haze. <br> all as it should be. </p>
+        </div>
+        <div class="entry" data-index="2" style="display:none">
+            <h2>Journal – Entry III</h2>
+            <p><strong>January 11, 1953</strong></p>
+            <p> inspection complete, again. <br> supplies in order. <br> oil will last another week or so. <br> the horizon is hauntingly empty. <br> sometimes i hear horns in the distance, but they quickly go away. <br> nights are cold, but reliant. <br> work keeps the mind occupied. <br> </p>
+        </div>
+        <div class="entry" data-index="3" style="display:none">
+            <h2>Journal – Entry IV</h2>
+            <p><strong>January 15, 1953</strong></p>
+            <p> morning clouds heavy with rain. <br> i checked the keep top to bottom. <br> shutters hold, lantern perfectly doing its job.<br> cleaned windows despite the chill after the rain. <br> water on the roof is comforting, in a way.<br> still alone. no unusual sounds. </p>
+        </div>
+        <div class="entry" data-index="4" style="display:none">
+            <h2>Journal – Entry V</h2>
+            <p><strong>January 19, 1953</strong></p>
+            <p> noticed small changes in the light this morning.<br> the lens needed minor adjustment. <br> the birds are still restless.<br> spent the day walking the perimeter, counting each stone, each board. <br> repetition keeps the hours sharp.<br> the wind whines in the tower, but all is accounted for. </p>
+        </div>
+        <div class="entry" data-index="5" style="display:none">
+            <h2>Journal – Entry VI</h2>
+            <p><strong>January 26, 1953</strong></p>
+            <p> the evening is calm. <br> the lamp is burning brightly<br> there are no ships in sight and no signals are being sent.<br> the wind is shifting a little from the east.<br> the sea is... restless, but predictable.<br> all is in order. </p>
+        </div>
+        <div class="entry" data-index="6" style="display:none">
+            <h2>Journal – Entry VII</h2>
+            <p><strong>February 2, 1953</strong></p>
+            <p> checked the lantern, polished brass fittings. <br> the horizon remains empty. it's starting to take a toll on me. <br> gulls are exceptionally quiet tonight. <br> i hear nothing but the waves and the creak of wood. <br> keep secure, oil sufficient. <br> all as expected. </p>
+        </div>
+        <div class="entry" data-index="7" style="display:none">
+            <h2>Journal – Entry VIII</h2>
+            <p><strong>February 5, 1953</strong></p>
+            <p> saw an old shipwreck on the horizon today. <br> can't stop thinking about it. <br> lens caught its reflection faintly. <br> oil lasts, lamp steady. <br> still, the sight lingers. </p>
+        </div>
+        <div class="entry" data-index="8" style="display:none">
+            <h2>Journal – Entry IX</h2>
+            <p><strong>February 9, 1953</strong></p>
+            <p> memories surfaced this morning. <br> the shore, someone waiting. <br> i can almost hear them calling, but the wind takes it away. <br> lamp burns longer than necessary. <br> feels important. </p>
+        </div>
+        <div class="entry" data-index="9" style="display:none">
+            <h2>Journal – Entry X</h2>
+            <p><strong>February 12, 1953</strong></p>
+            <p> fog heavier, light cutting through thick gray. <br> adjusted lens, polished brass again. <br> horizon feels restless. <br> i wonder if a ship ever truly sees this light. </p>
+        </div>
+        <div class="entry" data-index="10" style="display:none">
+            <h2>Journal – Entry XI</h2>
+            <p><strong>February 20, 1953</strong></p>
+            <p> strange noises in the tower tonight. <br> wood creaks differently. <br> lamp keeps burning. <br> count waves, count seconds between each pulse of light. <br> order matters. </p>
+        </div>
+        <div class="entry" data-index="11" style="display:none">
+            <h2>Journal – Entry XII</h2>
+            <p><strong>February 28, 1953</strong></p>
+            <p> horizon flickers. <br> could be phantom lights, or just reflection. <br> cannot tell. <br> signal anyway. <br> oil runs low but i keep going. <br> repetition keeps me from thinking too far. </p>
+        </div>
     </div>
-    <div class="entry" data-index="1" style="display:none">
-        <h2>Journal – Entry II</h2>
-        <p><strong>January 7, 1953</strong></p>
-        <p> the fog rolled in thick this morning. <br> visibility low. the light will be of use. <br> spent hours on maintenance. i tightened the railings and polished the lens. <br> saw a lone gull circling near the cliffs, more persistent than usual. <br> they are noisy today, but harmless. <br> the lamp shines through the haze. <br> all as it should be. </p>
-    </div>
-    <div class="entry" data-index="2" style="display:none">
-        <h2>Journal – Entry III</h2>
-        <p><strong>January 11, 1953</strong></p>
-        <p> inspection complete, again. <br> supplies in order. <br> oil will last another week or so. <br> the horizon is hauntingly empty. <br> sometimes i hear horns in the distance, but they quickly go away. <br> nights are cold, but reliant. <br> work keeps the mind occupied. <br> </p>
-    </div>
-    <div class="entry" data-index="3" style="display:none">
-        <h2>Journal – Entry IV</h2>
-        <p><strong>January 15, 1953</strong></p>
-        <p> morning clouds heavy with rain. <br> i checked the keep top to bottom. <br> shutters hold, lantern perfectly doing its job.<br> cleaned windows despite the chill after the rain. <br> water on the roof is comforting, in a way.<br> still alone. no unusual sounds. </p>
-    </div>
-    <div class="entry" data-index="4" style="display:none">
-        <h2>Journal – Entry V</h2>
-        <p><strong>January 19, 1953</strong></p>
-        <p> noticed small changes in the light this morning.<br> the lens needed minor adjustment. <br> the birds are still restless.<br> spent the day walking the perimeter, counting each stone, each board. <br> repetition keeps the hours sharp.<br> the wind whines in the tower, but all is accounted for. </p>
-    </div>
-    <div class="entry" data-index="5" style="display:none">
-        <h2>Journal – Entry VI</h2>
-        <p><strong>January 26, 1953</strong></p>
-        <p> the evening is calm. <br> the lamp is burning brightly<br> there are no ships in sight and no signals are being sent.<br> the wind is shifting a little from the east.<br> the sea is... restless, but predictable.<br> all is in order. </p>
-    </div>
-    <div class="entry" data-index="6" style="display:none">
-        <h2>Journal – Entry VII</h2>
-        <p><strong>February 2, 1953</strong></p>
-        <p> checked the lantern, polished brass fittings. <br> the horizon remains empty. it's starting to take a toll on me. <br> gulls are exceptionally quiet tonight. <br> i hear nothing but the waves and the creak of wood. <br> keep secure, oil sufficient. <br> all as expected. </p>
-    </div>
-    <div class="entry" data-index="7" style="display:none">
-        <h2>Journal – Entry VIII</h2>
-        <p><strong>February 5, 1953</strong></p>
-        <p> saw an old shipwreck on the horizon today. <br> can't stop thinking about it. <br> lens caught its reflection faintly. <br> oil lasts, lamp steady. <br> still, the sight lingers. </p>
-    </div>
-    <div class="entry" data-index="8" style="display:none">
-        <h2>Journal – Entry IX</h2>
-        <p><strong>February 9, 1953</strong></p>
-        <p> memories surfaced this morning. <br> the shore, someone waiting. <br> i can almost hear them calling, but the wind takes it away. <br> lamp burns longer than necessary. <br> feels important. </p>
-    </div>
-    <div class="entry" data-index="9" style="display:none">
-        <h2>Journal – Entry X</h2>
-        <p><strong>February 12, 1953</strong></p>
-        <p> fog heavier, light cutting through thick gray. <br> adjusted lens, polished brass again. <br> horizon feels restless. <br> i wonder if a ship ever truly sees this light. </p>
-    </div>
-    <div class="entry" data-index="10" style="display:none">
-        <h2>Journal – Entry XI</h2>
-        <p><strong>February 20, 1953</strong></p>
-        <p> strange noises in the tower tonight. <br> wood creaks differently. <br> lamp keeps burning. <br> count waves, count seconds between each pulse of light. <br> order matters. </p>
-    </div>
-    <div class="entry" data-index="11" style="display:none">
-        <h2>Journal – Entry XII</h2>
-        <p><strong>February 28, 1953</strong></p>
-        <p> horizon flickers. <br> could be phantom lights, or just reflection. <br> cannot tell. <br> signal anyway. <br> oil runs low but i keep going. <br> repetition keeps me from thinking too far. </p>
-    </div>
-    <div class="journal-controls">
-        <button class="journal-btn" id="prevEntry">&#8592;</button>
-        <button class="journal-btn" id="nextEntry">&#8594;</button>
-    </div>
+
+```
+<div class="journal-controls">
+    <button class="journal-btn" id="prevEntry" aria-label="Previous entry">
+        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
+    </button>
+    <button class="journal-btn" id="nextEntry" aria-label="Next entry">
+        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
+    </button>
 </div>
+```
+
+</div>
+
 <script>
 const video = document.getElementById("myVideo")
 const playBtn = document.getElementById("playPause")
@@ -259,6 +366,7 @@ let currentEntry = 0
 const entries = document.querySelectorAll("#journal .entry")
 const prevBtn = document.getElementById("prevEntry")
 const nextBtn = document.getElementById("nextEntry")
+
 playBtn.addEventListener("click", () => {
     if (video.paused) {
         video.play()
@@ -291,11 +399,9 @@ function scrubVolume(e) {
     volumeLevel.style.height = percent*100 + "%"
 }
 
-// Check if the user is on a mobile device or touch screen
 const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window);
-
 if (isMobile) {
-  volumeBar.style.display = "none";
+    volumeBar.style.display = "none";
 }
 
 progressBar.addEventListener("pointerdown", e => {
@@ -316,8 +422,10 @@ window.addEventListener("pointerup", () => {
     isDraggingProgress=false
     isDraggingVolume=false
 })
+
 function showEntry(index) {
     entries.forEach((e,i)=>e.style.display=(i===index?"block":"none"))
+    document.getElementById("journal-entries").scrollTop = 0
 }
 prevBtn.addEventListener("click", () => {
     currentEntry = (currentEntry - 1 + entries.length) % entries.length
@@ -341,53 +449,7 @@ title.addEventListener("click", () => {
         showingJournal = false
     }
 })
-
-// --- DYNAMIC FILM GRAIN ---
-function createGrain() {
-    // 1. Create a tiny off-screen canvas
-    const canvas = document.createElement('canvas');
-    const ctx = canvas.getContext('2d');
-    canvas.width = 128; // Small size for performance
-    canvas.height = 128;
-
-    // 2. Create a perfectly sized overlay element
-    const grain = document.createElement('div');
-    grain.style.position = 'fixed';
-    grain.style.top = '0';
-    grain.style.left = '0';
-    grain.style.width = '100vw';
-    grain.style.height = '100vh';
-    grain.style.pointerEvents = 'none';
-    grain.style.zIndex = '9999';
-    // Adjust opacity here! (0.05 to 0.15 usually looks best for raw canvas noise)
-    grain.style.opacity = '0.08';
-    document.body.appendChild(grain);
-
-    // 3. Regenerate a completely new noise texture every frame
-    function animateGrain() {
-        const imgData = ctx.createImageData(canvas.width, canvas.height);
-        for (let i = 0; i < imgData.data.length; i += 4) {
-            // Random value between 0 and 255 for grayscale
-            const color = Math.floor(Math.random() * 255);
-            imgData.data[i]   = color; // Red
-            imgData.data[i+1] = color; // Green
-            imgData.data[i+2] = color; // Blue
-            imgData.data[i+3] = 255;   // Alpha
-        }
-        ctx.putImageData(imgData, 0, 0);
-        grain.style.backgroundImage = `url(${canvas.toDataURL()})`;
-
-        // setTimeout limits the frame rate to ~20fps so it looks like real film
-        setTimeout(() => requestAnimationFrame(animateGrain), 50);
-    }
-
-    animateGrain();
-}
-
-// Initialize the grain
-createGrain();
-
-
 </script>
+
 </body>
 </html>
