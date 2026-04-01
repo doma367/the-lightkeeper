@@ -7,8 +7,8 @@
 <style>
 
 @font-face {
-font-family: “Gallery”;
-src: url(“fonts/gallery.woff2”) format(“woff2”);
+font-family: "Gallery";
+src: url("fonts/gallery.woff2") format("woff2");
 }
 
   * {
@@ -25,7 +25,7 @@ src: url(“fonts/gallery.woff2”) format(“woff2”);
   body {
   display: flex;
   flex-direction: column;
-  font-family: “Gallery”, serif;
+  font-family: "Gallery", serif;
   color: #c9ad8d;
   text-align: center;
   padding: 0 10px;
@@ -55,7 +55,7 @@ src: url(“fonts/gallery.woff2”) format(“woff2”);
   background: #000;
   }
   .video-frame::after {
-  content: “”;
+  content: "";
   position: absolute;
   top: 0;
   left: 0;
@@ -92,6 +92,9 @@ src: url(“fonts/gallery.woff2”) format(“woff2”);
   cursor: pointer;
   transition: opacity 0.2s;
   flex-shrink: 0;
+  font-family: "Gallery", serif;
+  font-size: 1.1rem;
+  color: #0f0d0c;
   }
   #progressBar {
   width: clamp(100px,40vw,300px);
@@ -132,6 +135,8 @@ src: url(“fonts/gallery.woff2”) format(“woff2”);
   opacity: 0.6;
   flex-shrink: 0;
   }
+
+  /* FIX 2: Journal needs display:block in .show, not just opacity */
   #journal {
   display: none;
   opacity: 0;
@@ -142,6 +147,8 @@ src: url(“fonts/gallery.woff2”) format(“woff2”);
   line-height: 1.5em;
   transition: opacity 1s ease-in-out;
   position: relative;
+  overflow-y: auto;
+  max-height: calc(100vh - 120px);
   }
   #journal.show {
   display: block;
@@ -151,9 +158,11 @@ src: url(“fonts/gallery.woff2”) format(“woff2”);
   margin-top: 0;
   font-size: 1.5rem;
   letter-spacing: 0.2em;
+  font-family: "Gallery", serif;
   }
   #journal p {
   margin: 0.5em 0;
+  font-family: "Gallery", serif;
   }
   .journal-controls {
   display: flex;
@@ -162,13 +171,16 @@ src: url(“fonts/gallery.woff2”) format(“woff2”);
   margin-top: 15px;
   }
 
+
 </style>
 </head>
 <body>
 <h1 id="title">THE LIGHTKEEPER</h1>
 <div class="video-container" id="videoContainer">
     <div class="video-frame">
-        <video id="myVideo" src="videos/teaser.mp4" loop playsinline></video>
+        <!-- FIX 3: Added muted so mobile browsers allow playback; muted can be toggled off after first play -->
+        <video id="myVideo" src="videos/teaser.mp4" loop playsinline muted></video>
+
     </div>
     <div class="controls">
         <button id="playPause"></button>
@@ -261,137 +273,150 @@ let currentEntry = 0
 const entries = document.querySelectorAll("#journal .entry")
 const prevBtn = document.getElementById("prevEntry")
 const nextBtn = document.getElementById("nextEntry")
-playBtn.addEventListener("click", () => {
-    if (video.paused) {
-        video.play()
-        playBtn.style.opacity = "0.5"
-    } else {
-        video.pause()
-        playBtn.style.opacity = "1"
-    }
-})
-video.addEventListener("timeupdate", () => {
-    if (!isDraggingProgress && video.duration) {
-        const percent = (video.currentTime / video.duration) * 100
-        progress.style.width = percent + "%"
-    }
-})
-function scrubProgress(e) {
-    const rect = progressBar.getBoundingClientRect()
-    const x = e.clientX - rect.left
-    let percent = x / rect.width
-    percent = Math.max(0, Math.min(1, percent))
-    progress.style.width = percent*100 + "%"
-    video.currentTime = percent*video.duration
-}
-function scrubVolume(e) {
-    const rect = volumeBar.getBoundingClientRect()
-    let y = e.clientY - rect.top
-    y = Math.max(0, Math.min(rect.height, y))
-    const percent = 1 - y/rect.height
-    video.volume = percent
-    volumeLevel.style.height = percent*100 + "%"
-}
 
-// Check if the user is on a mobile device or touch screen
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (‘ontouchstart’ in window);
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window)
 
 if (isMobile) {
-volumeBar.style.display = “none”;
+  volumeBar.style.display = "none"
 }
 
-progressBar.addEventListener(“pointerdown”, e => {
-isDraggingProgress=true
-scrubProgress(e)
-progressBar.setPointerCapture(e.pointerId)
-})
-volumeBar.addEventListener(“pointerdown”, e => {
-isDraggingVolume=true
-scrubVolume(e)
-volumeBar.setPointerCapture(e.pointerId)
-})
-window.addEventListener(“pointermove”, e => {
-if (isDraggingProgress) scrubProgress(e)
-if (isDraggingVolume) scrubVolume(e)
-})
-window.addEventListener(“pointerup”, () => {
-isDraggingProgress=false
-isDraggingVolume=false
-})
-function showEntry(index) {
-entries.forEach((e,i)=>e.style.display=(i===index?“block”:“none”))
-}
-prevBtn.addEventListener(“click”, () => {
-currentEntry = (currentEntry - 1 + entries.length) % entries.length
-showEntry(currentEntry)
-})
-nextBtn.addEventListener(“click”, () => {
-currentEntry = (currentEntry + 1) % entries.length
-showEntry(currentEntry)
-})
-title.addEventListener(“click”, () => {
-if (!showingJournal) {
-wasPlaying = !video.paused
-video.pause()
-videoContainer.style.display = “none”
-journal.classList.add(“show”)
-showingJournal = true
-} else {
-journal.classList.remove(“show”)
-videoContainer.style.display = “flex”
-if (wasPlaying) video.play()
-showingJournal = false
-}
-})
-
-// — DYNAMIC FILM GRAIN —
-function createGrain() {
-// 1. Create a tiny off-screen canvas
-const canvas = document.createElement(‘canvas’);
-const ctx = canvas.getContext(‘2d’);
-canvas.width = 128; // Small size for performance
-canvas.height = 128;
-
-```
-// 2. Create a perfectly sized overlay element
-const grain = document.createElement('div');
-grain.style.position = 'fixed';
-grain.style.top = '0';
-grain.style.left = '0';
-grain.style.width = '100vw';
-grain.style.height = '100vh';
-grain.style.pointerEvents = 'none';
-grain.style.zIndex = '9999';
-// Adjust opacity here! (0.05 to 0.15 usually looks best for raw canvas noise)
-grain.style.opacity = '0.08';
-document.body.appendChild(grain);
-
-// 3. Regenerate a completely new noise texture every frame
-function animateGrain() {
-    const imgData = ctx.createImageData(canvas.width, canvas.height);
-    for (let i = 0; i < imgData.data.length; i += 4) {
-        // Random value between 0 and 255 for grayscale
-        const color = Math.floor(Math.random() * 255);
-        imgData.data[i]   = color; // Red
-        imgData.data[i+1] = color; // Green
-        imgData.data[i+2] = color; // Blue
-        imgData.data[i+3] = 255;   // Alpha
+// The custom play button is the user gesture — unmute on desktop after first press
+let hasInteracted = false
+playBtn.addEventListener("click", () => {
+  if (!hasInteracted) {
+    hasInteracted = true
+    if (!isMobile) {
+      video.muted = false
+      video.volume = 0.8
+      volumeLevel.style.height = "80%"
     }
-    ctx.putImageData(imgData, 0, 0);
-    grain.style.backgroundImage = `url(${canvas.toDataURL()})`;
+  }
+  if (video.paused) {
+    video.play()
+    playBtn.style.opacity = "0.5"
+  } else {
+    video.pause()
+    playBtn.style.opacity = "1"
+  }
+})
 
-    // setTimeout limits the frame rate to ~20fps so it looks like real film
-    setTimeout(() => requestAnimationFrame(animateGrain), 50);
+video.addEventListener("timeupdate", () => {
+  if (!isDraggingProgress && video.duration) {
+    const percent = (video.currentTime / video.duration) * 100
+    progress.style.width = percent + "%"
+  }
+})
+
+function scrubProgress(e) {
+  const rect = progressBar.getBoundingClientRect()
+  const x = e.clientX - rect.left
+  let percent = x / rect.width
+  percent = Math.max(0, Math.min(1, percent))
+  progress.style.width = percent * 100 + "%"
+  video.currentTime = percent * video.duration
 }
 
-animateGrain();
-```
-
+function scrubVolume(e) {
+  const rect = volumeBar.getBoundingClientRect()
+  let y = e.clientY - rect.top
+  y = Math.max(0, Math.min(rect.height, y))
+  const percent = 1 - y / rect.height
+  video.volume = percent
+  volumeLevel.style.height = percent * 100 + "%"
 }
 
-// Initialize the grain
-createGrain();
+progressBar.addEventListener("pointerdown", e => {
+  isDraggingProgress = true
+  scrubProgress(e)
+  progressBar.setPointerCapture(e.pointerId)
+})
+volumeBar.addEventListener("pointerdown", e => {
+  isDraggingVolume = true
+  scrubVolume(e)
+  volumeBar.setPointerCapture(e.pointerId)
+})
+window.addEventListener("pointermove", e => {
+  if (isDraggingProgress) scrubProgress(e)
+  if (isDraggingVolume) scrubVolume(e)
+})
+window.addEventListener("pointerup", () => {
+  isDraggingProgress = false
+  isDraggingVolume = false
+})
 
+function showEntry(index) {
+  entries.forEach((e, i) => e.style.display = (i === index ? "block" : "none"))
+}
+
+prevBtn.addEventListener("click", () => {
+  currentEntry = (currentEntry - 1 + entries.length) % entries.length
+  showEntry(currentEntry)
+})
+nextBtn.addEventListener("click", () => {
+  currentEntry = (currentEntry + 1) % entries.length
+  showEntry(currentEntry)
+})
+
+// FIX 2: Toggle between video and journal views correctly
+title.addEventListener("click", () => {
+  if (!showingJournal) {
+    wasPlaying = !video.paused
+    video.pause()
+    videoContainer.style.display = "none"
+    journal.style.display = "block"
+    // Force reflow so the transition fires
+    journal.offsetHeight
+    journal.style.opacity = "1"
+    showingJournal = true
+  } else {
+    journal.style.opacity = "0"
+    setTimeout(() => {
+      journal.style.display = "none"
+      videoContainer.style.display = "flex"
+      if (wasPlaying) video.play()
+    }, 300)
+    showingJournal = false
+  }
+})
+
+// FIX 1: Film grain — add background-size so the tile covers the screen
+function createGrain() {
+  const canvas = document.createElement('canvas')
+  const ctx = canvas.getContext('2d')
+  canvas.width = 128
+  canvas.height = 128
+
+  const grain = document.createElement('div')
+  grain.style.position = 'fixed'
+  grain.style.top = '0'
+  grain.style.left = '0'
+  grain.style.width = '100vw'
+  grain.style.height = '100vh'
+  grain.style.pointerEvents = 'none'
+  grain.style.zIndex = '9999'
+  grain.style.opacity = '0.08'
+  // ↓ This was missing — without it the 128px tile just sits in the corner
+  grain.style.backgroundSize = '128px 128px'
+  document.body.appendChild(grain)
+
+  function animateGrain() {
+    const imgData = ctx.createImageData(canvas.width, canvas.height)
+    for (let i = 0; i < imgData.data.length; i += 4) {
+      const color = Math.floor(Math.random() * 255)
+      imgData.data[i]   = color
+      imgData.data[i+1] = color
+      imgData.data[i+2] = color
+      imgData.data[i+3] = 255
+    }
+    ctx.putImageData(imgData, 0, 0)
+    grain.style.backgroundImage = `url(${canvas.toDataURL()})`
+    setTimeout(() => requestAnimationFrame(animateGrain), 50)
+  }
+
+  animateGrain()
+}
+
+createGrain()
 </script>
 </body>
 </html>
