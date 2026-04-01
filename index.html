@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+html>
 
 <html lang="en">
 <head>
@@ -58,8 +58,10 @@ src: url(“fonts/gallery.woff2”) format(“woff2”);
   .video-frame::after {
   content: “”;
   position: absolute;
-  top: 0; left: 0;
-  width: 100%; height: 100%;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
   box-shadow: inset 0 0 80px rgba(0,0,0,0.8);
   border-radius: 12px;
@@ -82,7 +84,7 @@ src: url(“fonts/gallery.woff2”) format(“woff2”);
   width: fit-content;
   max-width: 95vw;
   }
-  button#playPause {
+  button#playPause, .journal-btn {
   width: 36px;
   height: 36px;
   background: #c9ad8d;
@@ -130,109 +132,41 @@ src: url(“fonts/gallery.woff2”) format(“woff2”);
   font-size: clamp(0.6rem,3vw,0.8rem);
   opacity: 0.6;
   flex-shrink: 0;
-  font-family: “Gallery”, serif;
+  }
+  #journal {
+  display: none;
+  opacity: 0;
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: left;
+  line-height: 1.5em;
+  transition: opacity 1s ease-in-out;
+  position: relative;
+  }
+  #journal.show {
+  display: block;
+  opacity: 1;
+  }
+  #journal h2 {
+  margin-top: 0;
+  font-size: 1.5rem;
+  letter-spacing: 0.2em;
+  }
+  #journal p {
+  margin: 0.5em 0;
+  }
+  .journal-controls {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-top: 15px;
   }
 
-/* Journal */
-#journal {
-display: none;
-opacity: 0;
-flex: 1;
-max-width: 800px;
-margin: 0 auto;
-padding: 20px 20px 0;
-text-align: left;
-line-height: 1.5em;
-transition: opacity 1s ease-in-out;
-position: relative;
-width: 100%;
-overflow: hidden;
-font-family: “Gallery”, serif;
-color: #c9ad8d;
-}
-#journal.show {
-display: flex;
-flex-direction: column;
-opacity: 1;
-}
-#journal h2 {
-margin-top: 0;
-font-size: 1.5rem;
-letter-spacing: 0.2em;
-font-weight: normal;
-font-family: “Gallery”, serif;
-color: #c9ad8d;
-}
-#journal p {
-margin: 0.5em 0;
-font-family: “Gallery”, serif;
-color: #c9ad8d;
-}
-#journal strong {
-font-family: “Gallery”, serif;
-font-weight: bold;
-color: #c9ad8d;
-}
-#journal-entries {
-flex: 1;
-overflow-y: auto;
-padding-bottom: 10px;
-}
-#journal-entries::-webkit-scrollbar { display: none; }
-#journal-entries { scrollbar-width: none; }
-
-/* Arrows — fixed at bottom */
-.journal-controls {
-display: flex;
-justify-content: center;
-gap: 28px;
-padding: 16px 0 20px;
-flex-shrink: 0;
-border-top: 1px solid #2d2824;
-}
-.journal-btn {
-width: 44px;
-height: 44px;
-background: transparent;
-border: 1px solid #5a4a38;
-border-radius: 4px;
-cursor: pointer;
-display: flex;
-align-items: center;
-justify-content: center;
-transition: border-color 0.2s;
-padding: 0;
-}
-.journal-btn:hover { border-color: #c9ad8d; }
-.journal-btn svg {
-width: 16px;
-height: 16px;
-stroke: #c9ad8d;
-fill: none;
-stroke-width: 1.5;
-stroke-linecap: round;
-stroke-linejoin: round;
-display: block;
-}
-
-/* Grain canvas */
-#grainCanvas {
-position: fixed;
-top: 0; left: 0;
-width: 100%; height: 100%;
-pointer-events: none;
-z-index: 9999;
-opacity: 0.09;
-}
 </style>
-
 </head>
 <body>
-
-<canvas id="grainCanvas"></canvas>
-
 <h1 id="title">THE LIGHTKEEPER</h1>
-
 <div class="video-container" id="videoContainer">
     <div class="video-frame">
         <video id="myVideo" src="videos/teaser.mp4" loop playsinline></video>
@@ -243,209 +177,222 @@ opacity: 0.09;
         <div id="volumeBar"><div id="volumeLevel"></div></div>
     </div>
 </div>
-
 <h3>STORMED SHORE</h3>
-
 <div id="journal">
-    <div id="journal-entries">
-        <div class="entry" data-index="0">
-            <h2>Journal &#8211; Entry I</h2>
-            <p><strong>January 3, 1953</strong></p>
-            <p>i arrived at the keep today.<br>the wind was very sharp, but the light was steady, as it always is...<br>i looked around the keep, cleaned the lantern, checked the logs.<br>all in order.<br>nights are quiet, because all the gulls settle.<br>i am alone with the sea and the sound of waves crashing on the rocks.<br>first night here, all is well.</p>
-        </div>
-        <div class="entry" data-index="1" style="display:none">
-            <h2>Journal &#8211; Entry II</h2>
-            <p><strong>January 7, 1953</strong></p>
-            <p>the fog rolled in thick this morning.<br>visibility low. the light will be of use.<br>spent hours on maintenance. i tightened the railings and polished the lens.<br>saw a lone gull circling near the cliffs, more persistent than usual.<br>they are noisy today, but harmless.<br>the lamp shines through the haze.<br>all as it should be.</p>
-        </div>
-        <div class="entry" data-index="2" style="display:none">
-            <h2>Journal &#8211; Entry III</h2>
-            <p><strong>January 11, 1953</strong></p>
-            <p>inspection complete, again.<br>supplies in order.<br>oil will last another week or so.<br>the horizon is hauntingly empty.<br>sometimes i hear horns in the distance, but they quickly go away.<br>nights are cold, but reliant.<br>work keeps the mind occupied.</p>
-        </div>
-        <div class="entry" data-index="3" style="display:none">
-            <h2>Journal &#8211; Entry IV</h2>
-            <p><strong>January 15, 1953</strong></p>
-            <p>morning clouds heavy with rain.<br>i checked the keep top to bottom.<br>shutters hold, lantern perfectly doing its job.<br>cleaned windows despite the chill after the rain.<br>water on the roof is comforting, in a way.<br>still alone. no unusual sounds.</p>
-        </div>
-        <div class="entry" data-index="4" style="display:none">
-            <h2>Journal &#8211; Entry V</h2>
-            <p><strong>January 19, 1953</strong></p>
-            <p>noticed small changes in the light this morning.<br>the lens needed minor adjustment.<br>the birds are still restless.<br>spent the day walking the perimeter, counting each stone, each board.<br>repetition keeps the hours sharp.<br>the wind whines in the tower, but all is accounted for.</p>
-        </div>
-        <div class="entry" data-index="5" style="display:none">
-            <h2>Journal &#8211; Entry VI</h2>
-            <p><strong>January 26, 1953</strong></p>
-            <p>the evening is calm.<br>the lamp is burning brightly.<br>there are no ships in sight and no signals are being sent.<br>the wind is shifting a little from the east.<br>the sea is... restless, but predictable.<br>all is in order.</p>
-        </div>
-        <div class="entry" data-index="6" style="display:none">
-            <h2>Journal &#8211; Entry VII</h2>
-            <p><strong>February 2, 1953</strong></p>
-            <p>checked the lantern, polished brass fittings.<br>the horizon remains empty. it's starting to take a toll on me.<br>gulls are exceptionally quiet tonight.<br>i hear nothing but the waves and the creak of wood.<br>keep secure, oil sufficient.<br>all as expected.</p>
-        </div>
-        <div class="entry" data-index="7" style="display:none">
-            <h2>Journal &#8211; Entry VIII</h2>
-            <p><strong>February 5, 1953</strong></p>
-            <p>saw an old shipwreck on the horizon today.<br>can't stop thinking about it.<br>lens caught its reflection faintly.<br>oil lasts, lamp steady.<br>still, the sight lingers.</p>
-        </div>
-        <div class="entry" data-index="8" style="display:none">
-            <h2>Journal &#8211; Entry IX</h2>
-            <p><strong>February 9, 1953</strong></p>
-            <p>memories surfaced this morning.<br>the shore, someone waiting.<br>i can almost hear them calling, but the wind takes it away.<br>lamp burns longer than necessary.<br>feels important.</p>
-        </div>
-        <div class="entry" data-index="9" style="display:none">
-            <h2>Journal &#8211; Entry X</h2>
-            <p><strong>February 12, 1953</strong></p>
-            <p>fog heavier, light cutting through thick gray.<br>adjusted lens, polished brass again.<br>horizon feels restless.<br>i wonder if a ship ever truly sees this light.</p>
-        </div>
-        <div class="entry" data-index="10" style="display:none">
-            <h2>Journal &#8211; Entry XI</h2>
-            <p><strong>February 20, 1953</strong></p>
-            <p>strange noises in the tower tonight.<br>wood creaks differently.<br>lamp keeps burning.<br>count waves, count seconds between each pulse of light.<br>order matters.</p>
-        </div>
-        <div class="entry" data-index="11" style="display:none">
-            <h2>Journal &#8211; Entry XII</h2>
-            <p><strong>February 28, 1953</strong></p>
-            <p>horizon flickers.<br>could be phantom lights, or just reflection.<br>cannot tell.<br>signal anyway.<br>oil runs low but i keep going.<br>repetition keeps me from thinking too far.</p>
-        </div>
+    <div class="entry" data-index="0">
+        <h2>Journal – Entry I</h2>
+        <p><strong>January 3, 1953</strong></p>
+        <p> i arrived at the keep today. <br> the wind was very sharp, but the light was steady, as it always is...<br> i looked around the keep, cleaned the lantern, checked the logs. <br> all in order. <br> nights are quiet, because all the gulls settle.<br> i am alone with the sea and the sound of waves crashing on the rocks.<br> first night here, all is well. </p>
     </div>
-
-```
-<div class="journal-controls">
-    <button class="journal-btn" id="prevEntry" aria-label="Previous entry">
-        <svg viewBox="0 0 24 24"><polyline points="15 18 9 12 15 6"/></svg>
-    </button>
-    <button class="journal-btn" id="nextEntry" aria-label="Next entry">
-        <svg viewBox="0 0 24 24"><polyline points="9 18 15 12 9 6"/></svg>
-    </button>
+    <div class="entry" data-index="1" style="display:none">
+        <h2>Journal – Entry II</h2>
+        <p><strong>January 7, 1953</strong></p>
+        <p> the fog rolled in thick this morning. <br> visibility low. the light will be of use. <br> spent hours on maintenance. i tightened the railings and polished the lens. <br> saw a lone gull circling near the cliffs, more persistent than usual. <br> they are noisy today, but harmless. <br> the lamp shines through the haze. <br> all as it should be. </p>
+    </div>
+    <div class="entry" data-index="2" style="display:none">
+        <h2>Journal – Entry III</h2>
+        <p><strong>January 11, 1953</strong></p>
+        <p> inspection complete, again. <br> supplies in order. <br> oil will last another week or so. <br> the horizon is hauntingly empty. <br> sometimes i hear horns in the distance, but they quickly go away. <br> nights are cold, but reliant. <br> work keeps the mind occupied. <br> </p>
+    </div>
+    <div class="entry" data-index="3" style="display:none">
+        <h2>Journal – Entry IV</h2>
+        <p><strong>January 15, 1953</strong></p>
+        <p> morning clouds heavy with rain. <br> i checked the keep top to bottom. <br> shutters hold, lantern perfectly doing its job.<br> cleaned windows despite the chill after the rain. <br> water on the roof is comforting, in a way.<br> still alone. no unusual sounds. </p>
+    </div>
+    <div class="entry" data-index="4" style="display:none">
+        <h2>Journal – Entry V</h2>
+        <p><strong>January 19, 1953</strong></p>
+        <p> noticed small changes in the light this morning.<br> the lens needed minor adjustment. <br> the birds are still restless.<br> spent the day walking the perimeter, counting each stone, each board. <br> repetition keeps the hours sharp.<br> the wind whines in the tower, but all is accounted for. </p>
+    </div>
+    <div class="entry" data-index="5" style="display:none">
+        <h2>Journal – Entry VI</h2>
+        <p><strong>January 26, 1953</strong></p>
+        <p> the evening is calm. <br> the lamp is burning brightly<br> there are no ships in sight and no signals are being sent.<br> the wind is shifting a little from the east.<br> the sea is... restless, but predictable.<br> all is in order. </p>
+    </div>
+    <div class="entry" data-index="6" style="display:none">
+        <h2>Journal – Entry VII</h2>
+        <p><strong>February 2, 1953</strong></p>
+        <p> checked the lantern, polished brass fittings. <br> the horizon remains empty. it's starting to take a toll on me. <br> gulls are exceptionally quiet tonight. <br> i hear nothing but the waves and the creak of wood. <br> keep secure, oil sufficient. <br> all as expected. </p>
+    </div>
+    <div class="entry" data-index="7" style="display:none">
+        <h2>Journal – Entry VIII</h2>
+        <p><strong>February 5, 1953</strong></p>
+        <p> saw an old shipwreck on the horizon today. <br> can't stop thinking about it. <br> lens caught its reflection faintly. <br> oil lasts, lamp steady. <br> still, the sight lingers. </p>
+    </div>
+    <div class="entry" data-index="8" style="display:none">
+        <h2>Journal – Entry IX</h2>
+        <p><strong>February 9, 1953</strong></p>
+        <p> memories surfaced this morning. <br> the shore, someone waiting. <br> i can almost hear them calling, but the wind takes it away. <br> lamp burns longer than necessary. <br> feels important. </p>
+    </div>
+    <div class="entry" data-index="9" style="display:none">
+        <h2>Journal – Entry X</h2>
+        <p><strong>February 12, 1953</strong></p>
+        <p> fog heavier, light cutting through thick gray. <br> adjusted lens, polished brass again. <br> horizon feels restless. <br> i wonder if a ship ever truly sees this light. </p>
+    </div>
+    <div class="entry" data-index="10" style="display:none">
+        <h2>Journal – Entry XI</h2>
+        <p><strong>February 20, 1953</strong></p>
+        <p> strange noises in the tower tonight. <br> wood creaks differently. <br> lamp keeps burning. <br> count waves, count seconds between each pulse of light. <br> order matters. </p>
+    </div>
+    <div class="entry" data-index="11" style="display:none">
+        <h2>Journal – Entry XII</h2>
+        <p><strong>February 28, 1953</strong></p>
+        <p> horizon flickers. <br> could be phantom lights, or just reflection. <br> cannot tell. <br> signal anyway. <br> oil runs low but i keep going. <br> repetition keeps me from thinking too far. </p>
+    </div>
+    <div class="journal-controls">
+        <button class="journal-btn" id="prevEntry">&#8592;</button>
+        <button class="journal-btn" id="nextEntry">&#8594;</button>
+    </div>
 </div>
-```
-
-</div>
-
 <script>
-// ── Video controls ──────────────────────────────────────────────
-const video          = document.getElementById("myVideo")
-const playBtn        = document.getElementById("playPause")
-const progress       = document.getElementById("progress")
-const progressBar    = document.getElementById("progressBar")
-const volumeBar      = document.getElementById("volumeBar")
-const volumeLevel    = document.getElementById("volumeLevel")
-const title          = document.getElementById("title")
-const journal        = document.getElementById("journal")
+const video = document.getElementById("myVideo")
+const playBtn = document.getElementById("playPause")
+const progress = document.getElementById("progress")
+const progressBar = document.getElementById("progressBar")
+const volumeBar = document.getElementById("volumeBar")
+const volumeLevel = document.getElementById("volumeLevel")
+const title = document.getElementById("title")
+const journal = document.getElementById("journal")
 const videoContainer = document.getElementById("videoContainer")
-
-let showingJournal     = false
+let showingJournal = false
 let isDraggingProgress = false
-let isDraggingVolume   = false
-let wasPlaying         = false
-let currentEntry       = 0
-
+let isDraggingVolume = false
+let wasPlaying = false
+let currentEntry = 0
 const entries = document.querySelectorAll("#journal .entry")
 const prevBtn = document.getElementById("prevEntry")
 const nextBtn = document.getElementById("nextEntry")
-
 playBtn.addEventListener("click", () => {
-    if (video.paused) { video.play();  playBtn.style.opacity = "0.5" }
-    else              { video.pause(); playBtn.style.opacity = "1"   }
+    if (video.paused) {
+        video.play()
+        playBtn.style.opacity = "0.5"
+    } else {
+        video.pause()
+        playBtn.style.opacity = "1"
+    }
 })
 video.addEventListener("timeupdate", () => {
-    if (!isDraggingProgress && video.duration)
-        progress.style.width = (video.currentTime / video.duration * 100) + "%"
+    if (!isDraggingProgress && video.duration) {
+        const percent = (video.currentTime / video.duration) * 100
+        progress.style.width = percent + "%"
+    }
 })
 function scrubProgress(e) {
     const rect = progressBar.getBoundingClientRect()
-    let p = (e.clientX - rect.left) / rect.width
-    p = Math.max(0, Math.min(1, p))
-    progress.style.width = p * 100 + "%"
-    video.currentTime = p * video.duration
+    const x = e.clientX - rect.left
+    let percent = x / rect.width
+    percent = Math.max(0, Math.min(1, percent))
+    progress.style.width = percent*100 + "%"
+    video.currentTime = percent*video.duration
 }
 function scrubVolume(e) {
     const rect = volumeBar.getBoundingClientRect()
-    let y = Math.max(0, Math.min(rect.height, e.clientY - rect.top))
-    const p = 1 - y / rect.height
-    video.volume = p
-    volumeLevel.style.height = p * 100 + "%"
+    let y = e.clientY - rect.top
+    y = Math.max(0, Math.min(rect.height, y))
+    const percent = 1 - y/rect.height
+    video.volume = percent
+    volumeLevel.style.height = percent*100 + "%"
 }
-const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || ('ontouchstart' in window)
-if (isMobile) volumeBar.style.display = "none"
 
-progressBar.addEventListener("pointerdown", e => { isDraggingProgress = true; scrubProgress(e); progressBar.setPointerCapture(e.pointerId) })
-volumeBar.addEventListener("pointerdown",   e => { isDraggingVolume   = true; scrubVolume(e);   volumeBar.setPointerCapture(e.pointerId) })
-window.addEventListener("pointermove", e => { if (isDraggingProgress) scrubProgress(e); if (isDraggingVolume) scrubVolume(e) })
-window.addEventListener("pointerup",   () => { isDraggingProgress = false; isDraggingVolume = false })
+// Check if the user is on a mobile device or touch screen
+const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(navigator.userAgent) || (‘ontouchstart’ in window);
 
-// ── Journal navigation ──────────────────────────────────────────
-function showEntry(i) {
-    entries.forEach((e, j) => e.style.display = (j === i ? "block" : "none"))
-    document.getElementById("journal-entries").scrollTop = 0
+if (isMobile) {
+volumeBar.style.display = “none”;
 }
-prevBtn.addEventListener("click", () => { currentEntry = (currentEntry - 1 + entries.length) % entries.length; showEntry(currentEntry) })
-nextBtn.addEventListener("click", () => { currentEntry = (currentEntry + 1) % entries.length; showEntry(currentEntry) })
 
-title.addEventListener("click", () => {
-    if (!showingJournal) {
-        wasPlaying = !video.paused
-        video.pause()
-        videoContainer.style.display = "none"
-        journal.classList.add("show")
-        showingJournal = true
-    } else {
-        journal.classList.remove("show")
-        videoContainer.style.display = "flex"
-        if (wasPlaying) video.play()
-        showingJournal = false
-    }
+progressBar.addEventListener(“pointerdown”, e => {
+isDraggingProgress=true
+scrubProgress(e)
+progressBar.setPointerCapture(e.pointerId)
+})
+volumeBar.addEventListener(“pointerdown”, e => {
+isDraggingVolume=true
+scrubVolume(e)
+volumeBar.setPointerCapture(e.pointerId)
+})
+window.addEventListener(“pointermove”, e => {
+if (isDraggingProgress) scrubProgress(e)
+if (isDraggingVolume) scrubVolume(e)
+})
+window.addEventListener(“pointerup”, () => {
+isDraggingProgress=false
+isDraggingVolume=false
+})
+function showEntry(index) {
+entries.forEach((e,i)=>e.style.display=(i===index?“block”:“none”))
+}
+prevBtn.addEventListener(“click”, () => {
+currentEntry = (currentEntry - 1 + entries.length) % entries.length
+showEntry(currentEntry)
+})
+nextBtn.addEventListener(“click”, () => {
+currentEntry = (currentEntry + 1) % entries.length
+showEntry(currentEntry)
+})
+title.addEventListener(“click”, () => {
+if (!showingJournal) {
+wasPlaying = !video.paused
+video.pause()
+videoContainer.style.display = “none”
+journal.classList.add(“show”)
+showingJournal = true
+} else {
+journal.classList.remove(“show”)
+videoContainer.style.display = “flex”
+if (wasPlaying) video.play()
+showingJournal = false
+}
 })
 
-// ── Procedural film grain ───────────────────────────────────────
-(function () {
-    const canvas = document.getElementById("grainCanvas")
-    const ctx    = canvas.getContext("2d")
+// — DYNAMIC FILM GRAIN —
+function createGrain() {
+// 1. Create a tiny off-screen canvas
+const canvas = document.createElement(‘canvas’);
+const ctx = canvas.getContext(‘2d’);
+canvas.width = 128; // Small size for performance
+canvas.height = 128;
 
-    // Tune these to taste
-    const FPS      = 18          // animation speed (frames per second)
-    const interval = 1000 / FPS
-    let W, H, lastTime = 0
+```
+// 2. Create a perfectly sized overlay element
+const grain = document.createElement('div');
+grain.style.position = 'fixed';
+grain.style.top = '0';
+grain.style.left = '0';
+grain.style.width = '100vw';
+grain.style.height = '100vh';
+grain.style.pointerEvents = 'none';
+grain.style.zIndex = '9999';
+// Adjust opacity here! (0.05 to 0.15 usually looks best for raw canvas noise)
+grain.style.opacity = '0.08';
+document.body.appendChild(grain);
 
-    function resize() {
-        W = canvas.width  = window.innerWidth
-        H = canvas.height = window.innerHeight
+// 3. Regenerate a completely new noise texture every frame
+function animateGrain() {
+    const imgData = ctx.createImageData(canvas.width, canvas.height);
+    for (let i = 0; i < imgData.data.length; i += 4) {
+        // Random value between 0 and 255 for grayscale
+        const color = Math.floor(Math.random() * 255);
+        imgData.data[i]   = color; // Red
+        imgData.data[i+1] = color; // Green
+        imgData.data[i+2] = color; // Blue
+        imgData.data[i+3] = 255;   // Alpha
     }
-    window.addEventListener("resize", resize)
-    resize()
+    ctx.putImageData(imgData, 0, 0);
+    grain.style.backgroundImage = `url(${canvas.toDataURL()})`;
 
-    // Pre-allocate a reusable buffer so we don't alloc on every frame
-    let imgData = null
+    // setTimeout limits the frame rate to ~20fps so it looks like real film
+    setTimeout(() => requestAnimationFrame(animateGrain), 50);
+}
 
-    function drawGrain(ts) {
-        requestAnimationFrame(drawGrain)
-        if (ts - lastTime < interval) return
-        lastTime = ts
+animateGrain();
+```
 
-        // Recreate buffer only when canvas resized
-        if (!imgData || imgData.width !== W || imgData.height !== H) {
-            imgData = ctx.createImageData(W, H)
-        }
+}
 
-        const data = imgData.data
-        const len  = data.length
+// Initialize the grain
+createGrain();
 
-        // Fill every pixel with a fresh random grey value
-        for (let i = 0; i < len; i += 4) {
-            const v  = (Math.random() * 256) | 0
-            data[i]     = v
-            data[i + 1] = v
-            data[i + 2] = v
-            data[i + 3] = 230   // ~90% opaque so canvas opacity does the rest
-        }
-
-        ctx.putImageData(imgData, 0, 0)
-    }
-
-    requestAnimationFrame(drawGrain)
-})()
 </script>
-
 </body>
 </html>
