@@ -31,11 +31,21 @@ src: url("fonts/gallery.woff2") format("woff2");
   padding: 0 10px;
   }
   h1 {
-  margin: 2vh 0;
+  margin: 2vh 0 0;
   font-size: clamp(1.2rem, 8vw, 4rem);
   letter-spacing: 0.3em;
   font-weight: normal;
   cursor: pointer;
+  }
+  #titleHint {
+  margin: 4px 0 0;
+  font-size: clamp(0.5rem, 2vw, 0.65rem);
+  letter-spacing: 0.5em;
+  color: #8a6f4d;
+  opacity: 0.7;
+  transition: opacity 0.4s;
+  pointer-events: none;
+  font-family: "Gallery", serif;
   }
   .video-container {
   flex: 1;
@@ -45,6 +55,7 @@ src: url("fonts/gallery.woff2") format("woff2");
   align-items: center;
   min-height: 0;
   gap: 20px;
+  transition: opacity 0.6s ease-in-out;
   }
   .video-frame {
   position: relative;
@@ -134,6 +145,7 @@ src: url("fonts/gallery.woff2") format("woff2");
   font-size: clamp(0.6rem,3vw,0.8rem);
   opacity: 0.6;
   flex-shrink: 0;
+  transition: opacity 0.6s ease-in-out;
   }
 
   #journal {
@@ -226,6 +238,7 @@ src: url("fonts/gallery.woff2") format("woff2");
 </head>
 <body>
 <h1 id="title">THE LIGHTKEEPER</h1>
+<p id="titleHint">↑ OPEN JOURNAL</p>
 <div class="video-container" id="videoContainer">
     <div class="video-frame">
         <video id="myVideo" src="videos/teaser.mp4" loop playsinline></video>
@@ -237,7 +250,7 @@ src: url("fonts/gallery.woff2") format("woff2");
         <div id="volumeBar"><div id="volumeLevel"></div></div>
     </div>
 </div>
-<h3>STORMED SHORE</h3>
+<h3 id="bandName">STORMED SHORE</h3>
 <div id="journal">
     <div class="entry" data-index="0">
         <h2>Journal – Entry I</h2>
@@ -316,6 +329,8 @@ const progressBar = document.getElementById("progressBar")
 const volumeBar = document.getElementById("volumeBar")
 const volumeLevel = document.getElementById("volumeLevel")
 const title = document.getElementById("title")
+const titleHint = document.getElementById("titleHint")
+const bandName = document.getElementById("bandName")
 const journal = document.getElementById("journal")
 const videoContainer = document.getElementById("videoContainer")
 let showingJournal = false
@@ -429,20 +444,29 @@ title.addEventListener("click", () => {
   if (!showingJournal) {
     wasPlaying = !video.paused
     video.pause()
-    videoContainer.style.display = "none"
-    journal.style.display = "block"
-    journal.offsetHeight // force reflow for transition
-    journal.style.opacity = "1"
+    videoContainer.style.opacity = "0"
+    setTimeout(() => {
+      videoContainer.style.display = "none"
+      journal.style.display = "block"
+      journal.offsetHeight
+      journal.style.opacity = "1"
+    }, 600)
     journalControls.classList.add("show")
+    titleHint.textContent = "↓ BACK TO FILM"
+    bandName.style.opacity = "0"
     showingJournal = true
   } else {
     journal.style.opacity = "0"
     journalControls.classList.remove("show")
     setTimeout(() => {
       journal.style.display = "none"
+      bandName.style.opacity = "0.6"
       videoContainer.style.display = "flex"
+      videoContainer.offsetHeight
+      videoContainer.style.opacity = "1"
       if (wasPlaying) video.play()
-    }, 300)
+    }, 600)
+    titleHint.textContent = "↑ OPEN JOURNAL"
     showingJournal = false
   }
 })
